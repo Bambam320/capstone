@@ -1,20 +1,9 @@
-import { useState, useEffect } from "react";
+import React from 'react'
 
-function App() {
-  const [count, setCount] = useState(0);
-  // adding stuff here
-  // adding more stuff here
-  useEffect(() => {
-    fetch("/hello")
-      .then((r) => r.json())
-      .then((data) => setCount(data.count));
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <h1>Page Count: {count}</h1>
-    </div>
-  );
+    <div>App</div>
+  )
 }
 
-export default App;
+export default App
