@@ -1,5 +1,5 @@
 # README
-
+Omar
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
@@ -22,3 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+Added Styled components
+npm install --save styled-components
+
+installed axios
+npm install axios
+
+npm install react-icons --save

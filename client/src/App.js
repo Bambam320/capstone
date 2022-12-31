@@ -1,3 +1,6 @@
+
+import React from 'react'
+
 // client/src/components/App.js
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -13,8 +16,10 @@ function App() {
       .then((data) => setCount(data.count));
   }, []);
 
+
+const App = () => {
   return (
-    <BrowserRouter>
+ <BrowserRouter>
       <div className="App">
         <Routes>
           <Route path="/testing" element = { <Test /> } />
@@ -25,4 +30,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
