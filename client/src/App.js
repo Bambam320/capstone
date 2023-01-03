@@ -1,33 +1,57 @@
-
-import React from 'react'
-
-// client/src/components/App.js
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Test from './Test'
-import PageCount from './PageCount'
-
-function App() {
-  const [count, setCount] = useState(0);
-  // checking commit
-  useEffect(() => {
-    fetch("/hello")
-      .then((r) => r.json())
-      .then((data) => setCount(data.count));
-  }, []);
-
+import React, { useEffect, useState } from "react";
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+import Signup from "./components/Signup";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SpotifyContext } from "./SpotifyContext";
 
 const App = () => {
-  return (
- <BrowserRouter>
-      <div className="App">
-        <Routes>
-          <Route path="/testing" element = { <Test /> } />
-          <Route path="/" element = { <PageCount count = {count} /> } />
-        </Routes>
-      </div>
-    </BrowserRouter>
-  );
-}
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-export default App
+  useEffect(() => {
+    fetch("/me").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => {
+          setIsAuthenticated(true);
+          setUser(user);
+        });
+      }
+    });
+  }, []);
+  // if (!isAuthenticated)
+  //   return (
+  //     <Login
+  //       error={"please login"}
+  //       setIsAuthenticated={setIsAuthenticated}
+  //       setUser={setUser}
+  //     />
+  //   );
+
+  return (
+    <SpotifyContext.Provider
+      value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
+    >
+      <Router>
+        {/* <NavBar  /> */}
+        {/* <Signup /> */}
+        {/* <Logout /> */}
+        <Routes>
+          {/* <Route
+            path='/login'
+            element={
+              <Login
+                setUser={setUser}
+                setIsAuthenticated={setIsAuthenticated}
+              /> */}
+
+          {/* <Route path="/" element={<Home />}/> */}
+          {/* <Route path="/logout" element={<Logout />}/> */}
+          <Route path='/' element={<Signup />} />
+        </Routes>
+      </Router>
+    </SpotifyContext.Provider>
+  );
+};
+
+export default App;
