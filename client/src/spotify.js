@@ -1,9 +1,13 @@
-export const authEndpoint =
-"https://accounts.spotify.com/authorize"
+//Wont Need any of this!!!! Learning purposes only!!!!!!!
+
+
+
+
+export const authEndpoint = "https://accounts.spotify.com/authorize";
 
 const redirectUri = "http://localhost:4000/";
 
-const clientId = "2dfbeddac42649038984309293d6ac13"//add our client id
+const clientId = "2dfbeddac42649038984309293d6ac13"; //add our client id
 const scopes = [
   "user-read-currently-playing",
   "user-read-recently-played",
@@ -15,20 +19,21 @@ export const accessUrl = `${authEndpoint}?client_id=${clientId}&redirect_uri=${r
   "%20"
 )}&response_type=token&show_dialog=true`;
 
-//click login button 
+//click login button
 //redirect to spotify
 //redirect to homepage when logged in
 //43:00 on video
 //57:00
 export const getTokenFromUrl = () => {
   return window.location.hash
-  .substring(1)
-  .split('&')
-  .reduce((initial,item) =>{
-    let parts = item.split('=')
-    initial[parts[0]] = decodeURIComponent(parts[1])
-    return initial;
-  },{})
-}
+    .substring(1)
+    .split("&")
+    .reduce((initial, item) => {
+      let parts = item.split("=");
+      initial[parts[0]] = decodeURIComponent(parts[1]);
+      return initial;
+    }, {});
+};
 
 //57:00
+//Wont Need any of this!!!! Learning purposes only!!!!!!!
