@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
-  resources :artists
-  resources :albums
-  resources :songs
-  resources :playlists
-  resources :users
-  get '/hello', to: 'application#hello_world'
+  resources :artists, only: [:index, :show, :create, :update, :destroy]
+  resources :albums, only: [:index, :show, :create, :update, :destroy]
+  resources :songs, only: [:index, :show, :create, :update, :destroy]
+  resources :playlists, only: [:index, :show, :create, :update, :destroy]
+  resources :users, only: [:show, :create, :index]
+
+  get '/me', to: "sessions#show"
+  post '/login', to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
 
   get "spotify_api/search", to: "spotify_api#search"
   get "spotify_api/audio-analysis", to: "spotify_api#audio_analysis"
@@ -17,4 +20,5 @@ Rails.application.routes.draw do
   get '*path',
   to: 'fallback#index',
   constraints: ->(req) { !req.xhr? && req.format.html? }
+  
 end

@@ -1,16 +1,32 @@
-class UsersController < ApplicationController
+class SessionsController < ApplicationController
   #rescues exceptions when data is not found or invalid
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   # wraps incoming parameters to let Rails see them
   wrap_parameters format: []
-
-  # signs up a new user to to login with spotify
-  # Users#Signup
+  
+  # finds a user and authenticates them then returns the user with 201 status code
+  # sessions#login
   def create
-    new_user = User.create!(params)
-    session[:user_id] = user.id
-    render json: user, status: :created
+    user = User.find_by!(username: user_params[:username])
+    if user&.authenticate(user_params[:password])
+      session[:user_id]= user.id
+      render json: user, status: 201
+  end
+  
+  #if the user is logged in, the users data and all associated information will be returned
+  # sessions#me
+  def show
+    if session[:user_id]
+      user = User.find(session[:user_id])
+    end
+  end
+
+  #the user in the sessions will be logged out
+  # sessions#logout
+  def destroy
+    session[:user_id] = nil
+    head :no_content
   end
 
   #private methods for users_controller
@@ -18,7 +34,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.permit(:username, :password, :password_confirmation)
+    params.permit(:username, :password)
   end
 
   #returns the errors in case the exceptions are raised
