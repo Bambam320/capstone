@@ -1,33 +1,25 @@
-
-import React from 'react'
-
-// client/src/components/App.js
-import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Test from './Test'
-import PageCount from './PageCount'
-
-function App() {
-  const [count, setCount] = useState(0);
-  // checking commit
-  useEffect(() => {
-    fetch("/hello")
-      .then((r) => r.json())
-      .then((data) => setCount(data.count));
-  }, []);
-
-
+import React, { useEffect, useState } from 'react'
+import Login from './components/Login'
+import { getTokenFromUrl } from './spotify'
 const App = () => {
+
+  const[token, setToken] = useState(null)
+  useEffect(()=>{
+    const hash = getTokenFromUrl();
+    window.location.hash ="";
+    const _token =hash.access_token;
+    if(_token){
+      setToken(_token)
+    }
+ 
+  },[])
   return (
- <BrowserRouter>
-      <div className="App">
-        <Routes>
-          <Route path="/testing" element = { <Test /> } />
-          <Route path="/" element = { <PageCount count = {count} /> } />
-        </Routes>
-      </div>
-    </BrowserRouter>
-  );
+    <div className='App'>
+   {token? <h1>I am logged in</h1> :<Login />}
+      
+     
+    </div>
+  )
 }
 
 export default App
