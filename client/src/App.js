@@ -1,57 +1,44 @@
 import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
-import Logout from "./components/Logout";
-import Signup from "./components/Signup";
-import Player from "./Player";
+import Home from './components/Home';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SpotifyContext } from "./SpotifyContext";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    fetch("/me").then((response) => {
-      if (response.ok) {
-        response.json().then((user) => {
-          setIsAuthenticated(true);
-          setUser(user);
-        });
-      }
-    });
-  }, []);
-  // if (!isAuthenticated)
-  //   return (
-  //     <Login
-  //       error={"please login"}
-  //       setIsAuthenticated={setIsAuthenticated}
-  //       setUser={setUser}
-  //     />
-  //   );
+console.log("isauthenticated from app", isAuthenticated)
+
+  // useEffect(() => {
+  //   fetch("/me").then((response) => {
+  //     if (response.ok) {
+  //       response.json().then((user) => {
+  //         setIsAuthenticated(true);
+  //         setUser(user);
+  //       });
+  //     }
+  //   });
+  // }, []);
+
+console.log("user", user)
+console.log("auth", isAuthenticated)
+
+  if (!isAuthenticated) return (<Login /> );
 
   return (
-    <SpotifyContext.Provider
-      value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
-    >
-      <Router>
-        {/* <NavBar  /> */}
-        {/* <Signup /> */}
-        {/* <Logout /> */}
+    <Router>
+        <SpotifyContext.Provider
+          value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
+        >
         <Routes>
-          {/* <Route
-            path='/login'
-            element={
-              <Login
-                setUser={setUser}
-                setIsAuthenticated={setIsAuthenticated}
-              /> */}
+          <Route path="/" element={<Home />}/>
+          <Route path='/login' element={ <Login/> } />
 
-          {/* <Route path="/" element={<Home />}/> */}
-          <Route path="/logout" element={<Logout />}/>
-          <Route path='/' element={<Player />} />
+
         </Routes>
-      </Router>
     </SpotifyContext.Provider>
+      </Router>
   );
 };
 

@@ -12,7 +12,7 @@
   color: black;
 }
 
-.login > a {
+.login > button {
   color: white;
   text-decoration: none;
   padding: 20px;

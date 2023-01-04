@@ -27,6 +27,8 @@ gem "bcrypt", "~> 3.1.7"
 # Use the pry gem to pp in the console. 
 gem 'pry'
 
+gem 'byebug'
+
 # Use serializers for the model
 gem 'active_model_serializers'
 
