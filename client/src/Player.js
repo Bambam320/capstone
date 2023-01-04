@@ -1,8 +1,16 @@
 import React from "react";
-
-
+import'./Player.css'
+import Sidebar from "./Sidebar";
+import Body from "./Body"
 function Player() {
-  return <div>Welcome to Spotify</div>;
-}
+  return(
+  <div className="player">
+    <div className="player__body">
+    <Sidebar />
+    <Body />
+    </div>
+    {/* footer */}
+  </div>
+)}
 
 export default Player;
