@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Signup from "./components/Signup";
+import Player from "./Player";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SpotifyContext } from "./SpotifyContext";
 
@@ -46,8 +47,8 @@ const App = () => {
               /> */}
 
           {/* <Route path="/" element={<Home />}/> */}
-          {/* <Route path="/logout" element={<Logout />}/> */}
-          <Route path='/' element={<Signup />} />
+          <Route path="/logout" element={<Logout />}/>
+          <Route path='/' element={<Player />} />
         </Routes>
       </Router>
     </SpotifyContext.Provider>
