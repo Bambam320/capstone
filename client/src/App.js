@@ -38,7 +38,7 @@ function App() {
         <Navbar />
         <Routes>
             <Route index element={<Home />} />
-        
+            {/* <Route /> */}
 
 
         </Routes>

@@ -5,5 +5,6 @@ class User < ApplicationRecord
   #establishes relationship to other models
   has_many :playlists
 
+   #adds validations for the date saved to the user table
   validates :username, uniqueness: true
 end
