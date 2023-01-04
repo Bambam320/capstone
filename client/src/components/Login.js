@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { SpotifyContext } from "../SpotifyContext";
+import { SpotifyContext } from "../SpotifyContext.js";
 
 //imports styles
 import "./Login.css"
@@ -7,9 +7,7 @@ import "./Login.css"
 function Login() {
 
   //assigns context
-  const { setUser, setIsAuthenticated, isAuthenticated } = useContext(SpotifyContext)
-
-console.log("isauthenticatedg boolean", isAuthenticated)
+  const { setUser, setIsAuthenticated } = useContext(SpotifyContext)
 
   //assign state
   const defaultFormValues = {
@@ -26,10 +24,6 @@ console.log("isauthenticatedg boolean", isAuthenticated)
     setForm({...form, [e.target.name]: e.target.value})
   }
 
-console.log('formtype', formType)
-
-
-
   function handleFormClick (e) {
     e.preventDefault()
     setFormType('users')
@@ -43,17 +37,17 @@ console.log('formtype', formType)
       body: JSON.stringify(form),
     }).then((res) => {
         if (res.ok) {
-          res.json().then((user) => setUser(user))
+          res.json().then((user) => {
+            setIsAuthenticated(true)
+            setUser(user)})
         } else {
-          res.json()
-            .then((err) => setErrors(err.error))
+          res.json().then((err) => setErrors(err.errors))
         }
         setForm(defaultFormValues)
       })
   }
 
 
-  console.log("form from login", form)
 
   return (
     <div className='login'>
@@ -130,7 +124,11 @@ console.log('formtype', formType)
           </label>
         </form>
       }
-      <button onClick={handleFormClick}>New user? Create an account here!</button>
+      <button onClick={handleFormClick}>New user? Create an account!</button>
+      {errors.map((error) => {
+          return <span key={error} className=''>{error}</span>;
+        })}
+      
       <button onClick={handleSubmit}>Login with Spotify</button>
     </div>
   )
