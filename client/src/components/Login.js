@@ -1,71 +1,137 @@
-import React,{useState} from 'react'
+import React, { useState, useContext } from 'react'
+import { SpotifyContext } from "../SpotifyContext";
+
+//imports styles
 import "./Login.css"
-import { accessUrl } from '../spotify'
-function Login(setUser, setIsAuthenticated) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  const [error, setError] = useState([])
+function Login() {
 
-  function handleSubmit(e){
-      e.preventDefault()
-      const user = {
-          username: username,
-          password
-      }
+  //assigns context
+  const { setUser, setIsAuthenticated, isAuthenticated } = useContext(SpotifyContext)
 
-      fetch(`http://localhost:3000/login`,{
-          method:'POST',
-          headers:{'Content-Type': 'application/json'},
-          body:JSON.stringify(user)
-      })
-      .then(res => {
-        if(res.ok){
-          res.json()
-          .then(user =>{
-            setUser(user)
-            setIsAuthenticated(true)
-          })
+console.log("isauthenticatedg boolean", isAuthenticated)
 
+  //assign state
+  const defaultFormValues = {
+    username: '',
+    password: '',
+    password_confirmation: '',
+  }
+  const [form, setForm] = useState(defaultFormValues);
+  const [formType, setFormType] = useState('login');
+  const [errors, setErrors] = useState([]);
+
+  //updates the form held in state for login or signup
+  function handleChange (e) {
+    setForm({...form, [e.target.name]: e.target.value})
+  }
+
+console.log('formtype', formType)
+
+
+
+  function handleFormClick (e) {
+    e.preventDefault()
+    setFormType('users')
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    fetch(`/${formType}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    }).then((res) => {
+        if (res.ok) {
+          res.json().then((user) => setUser(user))
         } else {
           res.json()
-          .then(json => setError(json.error))
+            .then((err) => setErrors(err.error))
         }
+        setForm(defaultFormValues)
       })
   }
-  
+
+
+  console.log("form from login", form)
+
   return (
     <div className='login'>
-      <h1>🎶Fakeify&reg;</h1>
+      <h5>🎶Fakeify&reg;</h5>
 
-      
-      <form onSubmit={handleSubmit}>
-        <label className="font-bold px-1">Username:&nbsp;
-        <input
-          className=""
-          name="user[email]"
-          type="text"
-          placeholder="Enter Name"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        </label>
+      {/* ternary that displays either the login or the signup form */}
+      {formType === 'login' ?
 
-        <label className="font-bold px-1">Password:&nbsp;
-        <input
-          className=""
-          name="user[password]"
-          type="text"
-          placeholder="Enter Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        </label>
-      
-</form>
-      <a href={accessUrl}>Login with Spotify</a>
+        // login form    
+        <form onSubmit={handleSubmit}>
+          <label className=''>Username:&nbsp;
+            <input
+              className=""
+              name="username"
+              type="text"
+              placeholder="Enter Name"
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label className=''>Password:&nbsp;
+            <input
+              className=""
+              name="password"
+              type="password"
+              placeholder="Enter Password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </form>
+
+        :
+
+        //signup form
+        <form onSubmit={handleSubmit}>
+          <label className=''>
+            Username:&nbsp;
+            <input
+              className=''
+              name='username'
+              type='text'
+              placeholder='Enter Name'
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label className=''>
+            Password:&nbsp;
+            <input
+              className=''
+              name='password'
+              type='password'
+              placeholder='Enter Password'
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label className=''>
+            Password Confirmation:&nbsp;
+            <input
+              className=''
+              name='password_confirmation'
+              type='password'
+              placeholder='Enter Password Confirmation'
+              value={form.password_confirmation}
+              onChange={handleChange}
+              required
+            />
+          </label>
+        </form>
+      }
+      <button onClick={handleFormClick}>New user? Create an account here!</button>
+      <button onClick={handleSubmit}>Login with Spotify</button>
     </div>
   )
 }

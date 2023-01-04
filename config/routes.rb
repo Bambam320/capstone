@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :albums, only: [:index, :show, :create, :update, :destroy]
   resources :songs, only: [:index, :show, :create, :update, :destroy]
   resources :playlists, only: [:index, :show, :create, :update, :destroy]
-  resources :users, only: [:show, :create, :index]
+  resources :users
 
   get '/me', to: "sessions#show"
   post '/login', to: "sessions#create"

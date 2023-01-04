@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   # signs up a new user to to login with spotify
   # Users#Signup
   def create
-    new_user = User.create!(params)
+    user = User.create!(user_params)
     session[:user_id] = user.id
     render json: user, status: :created
   end
