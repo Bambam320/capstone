@@ -9,8 +9,6 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
 
-console.log("isauthenticated from app", isAuthenticated)
-
   // useEffect(() => {
   //   fetch("/me").then((response) => {
   //     if (response.ok) {
@@ -22,24 +20,30 @@ console.log("isauthenticated from app", isAuthenticated)
   //   });
   // }, []);
 
-console.log("user", user)
-console.log("auth", isAuthenticated)
+  console.log("user", user)
+  console.log("auth", isAuthenticated)
 
-  if (!isAuthenticated) return (<Login /> );
+
+
+  if (!isAuthenticated) return (
+    <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }} >
+      <Login />
+      </SpotifyContext.Provider>
+  );
 
   return (
     <Router>
-        <SpotifyContext.Provider
-          value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
-        >
+      <SpotifyContext.Provider
+        value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
+      >
         <Routes>
-          <Route path="/" element={<Player />}/>
-          <Route path='/login' element={ <Login/> } />
+          <Route path="/" element={<Player />} />
+          <Route path='/login' element={<Login />} />
 
 
         </Routes>
-    </SpotifyContext.Provider>
-      </Router>
+      </SpotifyContext.Provider>
+    </Router>
   );
 };
 

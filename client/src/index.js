@@ -3,13 +3,21 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
+  // sets the style of the background image
+  const backgroundStyle = {
+    background: 'linear-gradient(rgb(91, 87, 115), black',
+    height: '100vh',
+    width: '100vw',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-   
+       <div style={ backgroundStyle }>
       <App />
-    
+      </div>
   </React.StrictMode>
 );
 

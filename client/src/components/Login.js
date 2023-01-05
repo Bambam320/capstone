@@ -5,13 +5,11 @@ import { SpotifyContext } from "../SpotifyContext";
 import "./Login.css";
 
 function Login() {
+
   //assigns context
-  const { setUser, setIsAuthenticated, isAuthenticated } =
-    useContext(SpotifyContext);
+  const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
 
-  console.log("isauthenticatedg boolean", isAuthenticated);
-
-  //assign state
+  //assign state and default values
   const defaultFormValues = {
     username: "",
     password: "",
@@ -26,13 +24,19 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  console.log("formtype", formType);
-
-  function handleFormClick(e) {
+  // changes toggle to use sign up form
+  function handleSignUpFormClick(e) {
     e.preventDefault();
     setFormType("users");
   }
 
+  // changes toggle to use login form
+  function handleLoginFormClick(e) {
+    e.preventDefault();
+    setFormType("login");
+  }
+
+  // submits the login or signup form
   function handleSubmit(e) {
     e.preventDefault();
     fetch(`/${formType}`, {
@@ -41,7 +45,10 @@ function Login() {
       body: JSON.stringify(form),
     }).then((res) => {
       if (res.ok) {
-        res.json().then((user) => setUser(user));
+        res.json().then((user) => {
+          setIsAuthenticated(true)
+          setUser(user)
+        });
       } else {
         res.json().then((err) => setErrors(err.error));
       }
@@ -49,17 +56,17 @@ function Login() {
     });
   }
 
-  console.log("form from login", form);
 
   return (
     <div className='form'>
       {/* ternary that displays either the login or the signup form */}
       {formType === "login" ? (
+
         // login form
         <div className='login'>
           <h1 className='login__logo'>🎶Fakeify&reg;</h1>
           <form onSubmit={handleSubmit}>
-            <h1>Log in to continue.</h1>
+            <h1>Log in to continue</h1>
             <input
               className=''
               name='username'
@@ -69,7 +76,6 @@ function Login() {
               onChange={handleChange}
               required
             />
-
             <input
               className=''
               name='password'
@@ -79,52 +85,59 @@ function Login() {
               onChange={handleChange}
               required
             />
-
-            <button className='lbutton' onClick={handleSubmit}>
+            <button className='login-button' onClick={handleSubmit}>
               LOG IN
             </button>
-            <br />
-            <button onClick={handleFormClick}>
+            <button onClick={handleSignUpFormClick}>
               Dont have an account? SIGNUP
             </button>
-            
           </form>
         </div>
+
       ) : (
+
         //signup form
-        <form onSubmit={handleSubmit}>
-          <input
-            className=''
-            name='username'
-            type='text'
-            placeholder='Enter Name'
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            className=''
-            name='password'
-            type='password'
-            placeholder='Enter Password'
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-
-          <input
-            className=''
-            name='password_confirmation'
-            type='password'
-            placeholder='Enter Password Confirmation'
-            value={form.password_confirmation}
-            onChange={handleChange}
-            required
-          />
-        </form>
+        <div className="login" >
+          <h1 className='login__logo'>🎶Fakeify&reg;</h1>
+          <form onSubmit={handleSubmit}>
+          <h1>Sign up to continue</h1>
+            <input
+              className=''
+              name='username'
+              type='text'
+              placeholder='Enter Name'
+              value={form.username}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className=''
+              name='password'
+              type='password'
+              placeholder='Enter Password'
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <input
+              className=''
+              name='password_confirmation'
+              type='password'
+              placeholder='Enter Password Confirmation'
+              value={form.password_confirmation}
+              onChange={handleChange}
+              required
+            />
+            <button className='signup-button' onClick={handleSubmit}>
+              SIGN IN
+            </button>
+            <button onClick={handleLoginFormClick}>
+              Back to Login
+            </button>
+          </form>
+        </div>
       )}
-      </div>
+    </div>
   );
 }
 
