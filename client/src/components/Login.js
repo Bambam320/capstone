@@ -70,7 +70,7 @@ function Login() {
         <div className='login'>
           <h1 className='login__logo'>🎶Fakeify&reg;</h1>
           <form onSubmit={handleSubmit}>
-            <h1>Log in to continue, bitch!</h1>
+            <h1>Log in to continue.</h1>
             <input
               className=''
               name='username'
@@ -90,7 +90,7 @@ function Login() {
               required
             />
             <button className='login-button' onClick={handleSubmit}>
-              LOG IN, loser!!
+              LOG IN
             </button>
             <button onClick={handleSignUpFormClick}>
               Dont have an account? SIGNUP
@@ -138,6 +138,11 @@ function Login() {
             <button onClick={handleLoginFormClick}>
               Back to Login, loser
             </button>
+            <div>
+        {errors.map((error) => {
+          return <span key={error} className='error'>{error}</span>;
+        })}
+      </div>
           </form>
         </div>
       )}
