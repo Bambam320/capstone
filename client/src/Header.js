@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SpotifyContext } from "../SpotifyContext";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { Avatar } from "@mui/material";
 function Header() {
+  const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
+
+  function handleLogout () {
+    fetch("/logout")
+  }
+
   return (
     <div className='header'>
       <div className='header__left'>
@@ -11,8 +18,9 @@ function Header() {
       </div>
       
       <div className='header__right'>
-        <Avatar src='' alt='omar' />
-        <h4>Omar</h4>
+        <button onClick = {handleLogout}> Log out </button>
+        {/* <Avatar src='' alt='omar' />
+        <h4>Omar</h4> */}
       </div>
     </div>
   );
