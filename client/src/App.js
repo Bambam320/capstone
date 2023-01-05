@@ -25,7 +25,7 @@ console.log("isauthenticated from app", isAuthenticated)
 console.log("user", user)
 console.log("auth", isAuthenticated)
 
-  if (!isAuthenticated) return (<Player /> );
+  if (!isAuthenticated) return (<Login /> );
 
   return (
     <Router>
