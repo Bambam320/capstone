@@ -39,10 +39,14 @@ function Login() {
   // submits the login or signup form
   function handleSubmit(e) {
     e.preventDefault();
+    let bodyForm = formType === 'login' ? {
+      username: form.username,
+      password: form.password
+    } : form
     fetch(`/${formType}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(bodyForm),
     }).then((res) => {
       if (res.ok) {
         res.json().then((user) => {
@@ -66,7 +70,7 @@ function Login() {
         <div className='login'>
           <h1 className='login__logo'>🎶Fakeify&reg;</h1>
           <form onSubmit={handleSubmit}>
-            <h1>Log in to continue</h1>
+            <h1>Log in to continue, bitch!</h1>
             <input
               className=''
               name='username'
@@ -86,7 +90,7 @@ function Login() {
               required
             />
             <button className='login-button' onClick={handleSubmit}>
-              LOG IN
+              LOG IN, loser!!
             </button>
             <button onClick={handleSignUpFormClick}>
               Dont have an account? SIGNUP
@@ -100,7 +104,7 @@ function Login() {
         <div className="login" >
           <h1 className='login__logo'>🎶Fakeify&reg;</h1>
           <form onSubmit={handleSubmit}>
-          <h1>Sign up to continue</h1>
+          <h1>Sign up to continue, bitchass!</h1>
             <input
               className=''
               name='username'
@@ -129,10 +133,10 @@ function Login() {
               required
             />
             <button className='signup-button' onClick={handleSubmit}>
-              SIGN IN
+              SIGN IN, RIGHT NOW!!
             </button>
             <button onClick={handleLoginFormClick}>
-              Back to Login
+              Back to Login, loser
             </button>
           </form>
         </div>
