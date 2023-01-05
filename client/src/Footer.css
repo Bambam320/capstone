@@ -1,5 +1,5 @@
-.footer{
-  position:fixed;
+.footer {
+  position: fixed;
   display: flex;
   justify-content: space-between;
   bottom: 0;
@@ -9,7 +9,7 @@
   padding: 20px;
 }
 
-.footer__left{
+.footer__left {
   flex: 30%;
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@
   width: 300px;
 }
 
-.footer__center{
+.footer__center {
   flex: 40%;
   padding: 0 100px;
   color: white;
@@ -27,13 +27,12 @@
   max-width: 300px;
 }
 
-.footer__right{
-  flex:30%;
+.footer__right {
+  flex: 30%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
-  
 }
 .footer__albumLogo {
   height: 60px;
@@ -48,7 +47,7 @@
 .footer__songInfo > p {
   font-size: 12px;
 }
-.footer__green{
+.footer__green {
   color: #1ed15e;
 }
 .footer__icon:hover,
