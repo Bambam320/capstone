@@ -1,111 +1,75 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext } from "react";
 import { SpotifyContext } from "../SpotifyContext";
 
 //imports styles
-import "./Login.css"
+import "./Login.css";
 
 function Login() {
-
   //assigns context
-  const { setUser, setIsAuthenticated, isAuthenticated } = useContext(SpotifyContext)
+  const { setUser, setIsAuthenticated, isAuthenticated } =
+    useContext(SpotifyContext);
 
-console.log("isauthenticatedg boolean", isAuthenticated)
+  console.log("isauthenticatedg boolean", isAuthenticated);
 
   //assign state
   const defaultFormValues = {
-    username: '',
-    password: '',
-    password_confirmation: '',
-  }
+    username: "",
+    password: "",
+    password_confirmation: "",
+  };
   const [form, setForm] = useState(defaultFormValues);
-  const [formType, setFormType] = useState('login');
+  const [formType, setFormType] = useState("login");
   const [errors, setErrors] = useState([]);
 
   //updates the form held in state for login or signup
-  function handleChange (e) {
-    setForm({...form, [e.target.name]: e.target.value})
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-console.log('formtype', formType)
+  console.log("formtype", formType);
 
-
-
-  function handleFormClick (e) {
-    e.preventDefault()
-    setFormType('users')
+  function handleFormClick(e) {
+    e.preventDefault();
+    setFormType("users");
   }
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     fetch(`/${formType}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     }).then((res) => {
-        if (res.ok) {
-          res.json().then((user) => setUser(user))
-        } else {
-          res.json()
-            .then((err) => setErrors(err.error))
-        }
-        setForm(defaultFormValues)
-      })
+      if (res.ok) {
+        res.json().then((user) => setUser(user));
+      } else {
+        res.json().then((err) => setErrors(err.error));
+      }
+      setForm(defaultFormValues);
+    });
   }
 
-
-  console.log("form from login", form)
+  console.log("form from login", form);
 
   return (
-    <div className='login'>
-      <h5>🎶Fakeify&reg;</h5>
-
+    <div className='form'>
       {/* ternary that displays either the login or the signup form */}
-      {formType === 'login' ?
-
-        // login form    
-        <form onSubmit={handleSubmit}>
-          <label className=''>Username:&nbsp;
-            <input
-              className=""
-              name="username"
-              type="text"
-              placeholder="Enter Name"
-              value={form.username}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label className=''>Password:&nbsp;
-            <input
-              className=""
-              name="password"
-              type="password"
-              placeholder="Enter Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </form>
-
-        :
-
-        //signup form
-        <form onSubmit={handleSubmit}>
-          <label className=''>
-            Username:&nbsp;
+      {formType === "login" ? (
+        // login form
+        <div className='login'>
+          <h1 className='login__logo'>🎶Fakeify&reg;</h1>
+          <form onSubmit={handleSubmit}>
+            <h1>Log in to continue.</h1>
             <input
               className=''
               name='username'
               type='text'
-              placeholder='Enter Name'
+              placeholder='Enter Username'
               value={form.username}
               onChange={handleChange}
               required
             />
-          </label>
-          <label className=''>
-            Password:&nbsp;
+
             <input
               className=''
               name='password'
@@ -115,25 +79,53 @@ console.log('formtype', formType)
               onChange={handleChange}
               required
             />
-          </label>
-          <label className=''>
-            Password Confirmation:&nbsp;
-            <input
-              className=''
-              name='password_confirmation'
-              type='password'
-              placeholder='Enter Password Confirmation'
-              value={form.password_confirmation}
-              onChange={handleChange}
-              required
-            />
-          </label>
+
+            <button className='lbutton' onClick={handleSubmit}>
+              LOG IN
+            </button>
+            <br />
+            <button onClick={handleFormClick}>
+              Dont have an account? SIGNUP
+            </button>
+            
+          </form>
+        </div>
+      ) : (
+        //signup form
+        <form onSubmit={handleSubmit}>
+          <input
+            className=''
+            name='username'
+            type='text'
+            placeholder='Enter Name'
+            value={form.username}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            className=''
+            name='password'
+            type='password'
+            placeholder='Enter Password'
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            className=''
+            name='password_confirmation'
+            type='password'
+            placeholder='Enter Password Confirmation'
+            value={form.password_confirmation}
+            onChange={handleChange}
+            required
+          />
         </form>
-      }
-      <button onClick={handleFormClick}>New user? Create an account here!</button>
-      <button onClick={handleSubmit}>Login with Spotify</button>
-    </div>
-  )
+      )}
+      </div>
+  );
 }
 
-export default Login
+export default Login;
