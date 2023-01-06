@@ -133,16 +133,16 @@ function Login() {
               required
             />
             <button className='signup-button' onClick={handleSubmit}>
-              SIGN IN, RIGHT NOW!!
+              SIGN IN
             </button>
             <button onClick={handleLoginFormClick}>
-              Back to Login, loser
+              Back to Login.
             </button>
             <div>
-        {errors.map((error) => {
-          return <span key={error} className='error'>{error}</span>;
-        })}
-      </div>
+            {errors.map((error) => {
+              return <span key={error} className='error'>{error}</span>;
+            })}
+          </div>
           </form>
         </div>
       )}
