@@ -1,7 +1,26 @@
-.body{
-  
+.body {
   flex: 80%;
   height: 100vh;
   color: white;
-  background: linear-gradient(rgb(91,87,115),black)
+  overflow-y: overlay;
+  background: linear-gradient(rgb(91, 87, 115), black);
+}
+.body::-webkit-scrollbar{
+  display: none;
+}
+.body__info {
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+}
+.body__infoText > p{
+  font-size: 14px;
+}
+.body__infoText > p{
+  font-size: 14px;
+}
+.body__info > img {
+  height: 20vw;
+  margin: 20px;
+  box-shadow: 0 4px 60px rgba(0,0, 0, 0.5);
 }

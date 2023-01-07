@@ -23,12 +23,12 @@ const App = () => {
   console.log("user", user);
   console.log("auth", isAuthenticated);
 
-  if (!isAuthenticated)
-    return (
-      <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }}>
-        <Login />
-      </SpotifyContext.Provider>
-    );
+  // if (!isAuthenticated)
+  //   return (
+  //     <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }}>
+  //       <Login />
+  //     </SpotifyContext.Provider>
+  //   );
 
   return (
     <Router>
