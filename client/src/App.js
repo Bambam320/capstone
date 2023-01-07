@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Login from "./components/Login";
-import Home from './components/Home';
-import Player from './Player'
+import Home from "./components/Home";
+import Player from "./Player";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SpotifyContext } from "./SpotifyContext";
 
@@ -20,16 +20,15 @@ const App = () => {
   //   });
   // }, []);
 
-  console.log("user", user)
-  console.log("auth", isAuthenticated)
+  console.log("user", user);
+  console.log("auth", isAuthenticated);
 
-
-
-  if (!isAuthenticated) return (
-    <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }} >
-      <Login />
+  if (!isAuthenticated)
+    return (
+      <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }}>
+        <Login />
       </SpotifyContext.Provider>
-  );
+    );
 
   return (
     <Router>
@@ -37,10 +36,8 @@ const App = () => {
         value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
       >
         <Routes>
-          <Route path="/" element={<Player />} />
+          <Route path='/' element={<Player />} />
           <Route path='/login' element={<Login />} />
-
-
         </Routes>
       </SpotifyContext.Provider>
     </Router>
