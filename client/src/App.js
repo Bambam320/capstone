@@ -9,16 +9,16 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    fetch("/me").then((response) => {
-      if (response.ok) {
-        response.json().then((user) => {
-          setIsAuthenticated(true);
-          setUser(user);
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   fetch("/me").then((response) => {
+  //     if (response.ok) {
+  //       response.json().then((user) => {
+  //         setIsAuthenticated(true);
+  //         setUser(user);
+  //       });
+  //     }
+  //   });
+  // }, []);
 
   console.log("user", user);
   console.log("auth", isAuthenticated);
