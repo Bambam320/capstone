@@ -4,6 +4,8 @@ import Home from "./components/Home";
 import Player from "./Player";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { SpotifyContext } from "./SpotifyContext";
+import Search from "@mui/icons-material/Search";
+import Playlist from "./Playlist";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +40,8 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Player />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/search'element={<Search/>}/>
+          <Route path='/playlist/:id'element={<Playlist/>}/>
         </Routes>
       </SpotifyContext.Provider>
     </Router>

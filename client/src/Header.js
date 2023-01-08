@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import { SpotifyContext } from "./SpotifyContext";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,6 +18,20 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 function Header() {
+
+  const[search,setSearch] = useState("")
+  console.log(search)
+
+function handleChange(e){
+  setSearch(e.target.value)
+}
+
+function handleSubmit(e){
+  e.preventDefault()
+  fetch(`/spotify_api/${search}`)
+  .then((r)=>r.json())
+  .then((results)=> console.log(results))
+}
   const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
 
   //passed back from Navbar and removes the current user for logout
@@ -89,8 +103,18 @@ function Header() {
   return (
     <div className='header'>
       <div className='header__left'>
+      <form onSubmit={handleSubmit}>
         <SearchIcon />
-        <input placeholder='Search for Artists, Songs, or Artists' type='text' />
+        <input placeholder='Search for Artists, Songs, or Artists' type='text' 
+
+
+name='search'
+type='text' 
+value={search.search}
+onChange ={handleChange}
+/>
+<button onClick={handleSubmit}>Submit</button>
+</form>
       </div>
 
       <div className='header__right'>

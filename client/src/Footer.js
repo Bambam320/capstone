@@ -10,6 +10,11 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import { Grid, Slider } from "@mui/material";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+// import Slider from '@mui/material/Slider';
+import VolumeDown from '@mui/icons-material/VolumeDown';
+import VolumeUp from '@mui/icons-material/VolumeUp';
 
 // ************Asks us to be premium users*****************
 //  import SpotifyPlayer from 'react-spotify-web-playback';
@@ -41,11 +46,18 @@ function Footer() {
           <Grid item>
             <PlaylistPlayIcon />
           </Grid>
-          <Grid item>
-            <VolumeDownIcon />
-          </Grid>
           <Grid item xs>
-            <Slider aria-labelledby='continuous-slider' />
+          <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+  <VolumeDown />
+  <Slider aria-label="Volume" 
+  
+  // size="small"
+  // value={value} 
+  // onChange={handleChange} 
+  />
+  <VolumeUp />
+</Stack>
+
           </Grid>
         </Grid>
       </div>
