@@ -95,6 +95,7 @@ function Header() {
 
       <div className='header__right'>
 
+<<<<<<< HEAD
         <Button
           id="fade-button"
           aria-controls={open ? 'fade-menu' : undefined}
@@ -127,6 +128,42 @@ function Header() {
       </div>
     </div>
   );
+=======
+          <Button
+            id="demo-customized-button"
+            aria-controls={open ? 'demo-customized-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            variant="contained"
+            disableElevation
+            onClick={handleClick}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+          <Avatar className="Avatar"/>
+            Name
+          </Button>
+          <StyledMenu
+            id="demo-customized-menu"
+            MenuListProps={{
+              'aria-labelledby': 'demo-customized-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose} disableRipple>
+              <AccountBoxIcon />
+              My Profile
+            </MenuItem>
+            <Divider sx={{ my: 0.5 }} />
+            <MenuItem onClick={handleLogout} disableRipple>
+              Log out
+            </MenuItem>
+          </StyledMenu>
+        </div>Automatic merge failed; fix conflicts and then commit the result.
+        </div>
+        );
+>>>>>>> c04d9f406e0415334485ca30e9900e2d569523ba
 }
 
-export default Header;
+        export default Header;
