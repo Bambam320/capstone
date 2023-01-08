@@ -1,6 +1,7 @@
 import React from "react";
 import "./Body.css";
 import Header from "./Header";
+import Playlist from "./Playlist";
 import SongRow from "./SongRow";
 function Body() {
 
@@ -37,7 +38,9 @@ function Body() {
         </div>
         {/* list of songs */}
       </div>
-          <SongRow />
+      {/* {playlist.tracks.map((track) => ( */}
+          <SongRow  />
+         {/* ))} */}
     </div>
   );
 }
