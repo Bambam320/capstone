@@ -90,7 +90,7 @@ function Login() {
               required
             />
             <button className='login-button' onClick={handleSubmit}>
-              LOG IN
+              LOG IN WITH SPOTIFY
             </button>
             <button onClick={handleSignUpFormClick}>
               Dont have an account? SIGNUP
@@ -133,7 +133,7 @@ function Login() {
               required
             />
             <button className='signup-button' onClick={handleSubmit}>
-              SIGN IN
+              SIGN IN WITH SPOTIFY
             </button>
             <button onClick={handleLoginFormClick}>
               Back to Login.

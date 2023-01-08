@@ -10,18 +10,19 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by!(username: user_params[:username])
     if user&.authenticate(user_params[:password])
-      session[:user_id]= user.id
+      session[:user_id] = user.id
       render json: user, status: 201
     else
       render json: { errors: ["Username or Password is incorrect"] }, status: :unprocessable_entity
     end
   end
   
-  #if the user is logged in, the users data and all associated information will be returned
+  #if the user is logged in, that user will be returned to the front end
   # sessions#me
   def show
     if session[:user_id]
       user = User.find(session[:user_id])
+      render json: user, status: :ok
     end
   end
 
