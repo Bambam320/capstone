@@ -104,7 +104,8 @@ function Header() {
             onClick={handleClick}
             endIcon={<KeyboardArrowDownIcon />}
           >
-            Options
+          <Avatar className="Avatar"/>
+            Name
           </Button>
           <StyledMenu
             id="demo-customized-menu"
