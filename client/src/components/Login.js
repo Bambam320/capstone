@@ -90,7 +90,7 @@ function Login() {
               required
             />
             <button className='login-button' onClick={handleSubmit}>
-              LOG IN WITH SPOTIFY
+              LOG IN TO FAKEIFY
             </button>
             <button onClick={handleSignUpFormClick}>
               Dont have an account? SIGNUP
@@ -104,7 +104,7 @@ function Login() {
         <div className="login" >
           <h1 className='login__logo'>🎶Fakeify&reg;</h1>
           <form onSubmit={handleSubmit}>
-          <h1>Sign up to continue, bitchass!</h1>
+          <h1>Sign up for some sweet tunes!</h1>
             <input
               className=''
               name='username'
@@ -133,7 +133,7 @@ function Login() {
               required
             />
             <button className='signup-button' onClick={handleSubmit}>
-              SIGN IN WITH SPOTIFY
+              SIGN UP TO FAKEIFY
             </button>
             <button onClick={handleLoginFormClick}>
               Back to Login.

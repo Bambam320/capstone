@@ -109,14 +109,13 @@ function handleSubmit(e){
 
 
 name='search'
- 
+type='text' 
 value={search.search}
 onChange ={handleChange}
 />
 <button onClick={handleSubmit}>Submit</button>
 </form>
       </div>
-
       <div className='header__right'>
 
           <Button

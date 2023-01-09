@@ -8,16 +8,14 @@ function Body() {
   let search = 'thriller'
   function handleSubmit(e) {
     e.preventDefault()
-    fetch(`/auth/spotify`, {
-      method: POST
-    })
-      .then((res) => {
-        if(res.ok) {
-          res.json().then((results) => console.log("results", results))
-        } else {
-          res.json().then((errors) => console.log("errors", errors))
-        }
-      })
+    fetch(`/auth/spotify`, {method: "POST"})
+      // .then((res) => {
+      //   if(res.ok) {
+      //     res.json().then((results) => console.log("results", results))
+      //   } else {
+      //     res.json().then((errors) => console.log("errors", errors))
+      //   }
+      // })
   }
 
 
