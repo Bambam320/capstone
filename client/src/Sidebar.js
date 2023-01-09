@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import "./Sidebar.css";
 import SidebarOption from "./SidebarOption";
 import HomeIcon from "@mui/icons-material/Home";
@@ -12,7 +13,7 @@ function Sidebar() {
   return (
     <div className='sidebar'>
       <h1 className='logo'>🎶Fakeify&reg;</h1>
-      <SidebarOption Icon={HomeIcon} title='Home' />
+      <Link Icon={HomeIcon} title='Home' />
       <SidebarOption Icon={SearchIcon} title='Search' />
       <SidebarOption Icon={LibraryMusicIcon} title='Your Library' />
       <LoginToSpotify />

@@ -5,6 +5,7 @@
   transition: 200ms color ease-in;
   display: flex;
   align-items: center;
+  text-decoration: none;
 }
 .sidebarOption:hover{
   color:white

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post '/login', to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  get "callback", to: "spotify_api#callback"
+  get "auth/spotify/callback", to: "spotify_api#callback"
 
   get '*path',
   to: 'fallback#index',
