@@ -7,13 +7,9 @@
   background-color:#040404;
   padding-left: 10px;
   padding-right: 10px;
-  resize: horizontal;
-  overflow: auto;
+  /* resize: horizontal;
+  overflow: auto; */
 }
-
-.sidebar:last-child . {
-  margin-bottom: 20em ;
-  }
 
 .logo{
   margin:0;

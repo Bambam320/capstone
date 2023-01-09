@@ -1,37 +1,48 @@
-import React, { useContext,useState } from "react";
+//functional imports
+import React, { useContext, useState } from "react";
 import { SpotifyContext } from "./SpotifyContext";
+
+// imports styles and components
 import "./Header.css";
-import SearchIcon from "@mui/icons-material/Search";
+import "./Body.css";
 import { Avatar } from "@mui/material";
 
+//imports material ui
 import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
-import Divider from '@mui/material/Divider';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PersonIcon from '@mui/icons-material/Person';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import Paper from '@mui/material/Paper';
 
 
 function Header() {
 
-  const[search,setSearch] = useState("")
+  const [search, setSearch] = useState("")
   console.log(search)
 
-function handleChange(e){
-  setSearch(e.target.value)
-}
+  function handleChange(e) {
+    setSearch(e.target.value)
+  }
 
-function handleSubmit(e){
-  e.preventDefault()
-  fetch(`/spotify_api/${search}`)
-  .then((r)=>r.json())
-  .then((results)=> console.log(results))
-}
+  function handleSubmit(e) {
+    console.log('handle submit is working in search bar')
+    e.preventDefault()
+    fetch(`/spotify_api/${search}`)
+      .then((r) => r.json())
+      .then((results) => console.log(results))
+  }
   const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
 
   //passed back from Navbar and removes the current user for logout
@@ -101,45 +112,71 @@ function handleSubmit(e){
 
 
   return (
+    <div className='body'>
     <div className='header'>
       <div className='header__left'>
+        <form onSubmit={handleSubmit}>
+        <Paper
+      component="form"
+      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+    >
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        placeholder="Search for Songs, Artists or albums"
+      />
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+
+      <SearchIcon onClick={handleSubmit}/>
+      </IconButton>
+      </Paper>
+
+          {/* <SearchIcon />
+          <input placeholder='Search for Artists, Songs, or Artists' 
+            type='text'
+            name='search'
+            value={search.search}
+            onChange={handleChange}
+          /> */}
+        </form>
       </div>
+
       <div className='header__right'>
 
-          <Button
-            id="demo-customized-button"
-            aria-controls={open ? 'demo-customized-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            variant="contained"
-            disableElevation
-            onClick={handleClick}
-            endIcon={<KeyboardArrowDownIcon />}
-          >
-          <Avatar className="Avatar"/>
-            Name
-          </Button>
-          <StyledMenu
-            id="demo-customized-menu"
-            MenuListProps={{
-              'aria-labelledby': 'demo-customized-button',
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose} disableRipple>
-              <AccountBoxIcon />
-              My Profile
-            </MenuItem>
-            <Divider sx={{ my: 0.5 }} />
-            <MenuItem onClick={handleLogout} disableRipple>
-              Log out
-            </MenuItem>
-          </StyledMenu>
-        </div>
-        </div>
-        );
+        <Button
+          id="demo-customized-button"
+          aria-controls={open ? 'demo-customized-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          variant="contained"
+          disableElevation
+          onClick={handleClick}
+          endIcon={<KeyboardArrowDownIcon />}
+        >
+          <Avatar className="Avatar" />
+          Name
+        </Button>
+        <StyledMenu
+          id="demo-customized-menu"
+          MenuListProps={{
+            'aria-labelledby': 'demo-customized-button',
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose} disableRipple>
+            <AccountBoxIcon />
+            My Profile
+          </MenuItem>
+          <Divider sx={{ my: 0.5 }} />
+          <MenuItem onClick={handleLogout} disableRipple>
+            Log out
+          </MenuItem>
+        </StyledMenu>
+      </div>
+    </div>
+    </div>
+  );
 }
 
-        export default Header;
+export default Header;

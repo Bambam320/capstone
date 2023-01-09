@@ -17,8 +17,6 @@ import "../SidebarOption.css";
 import LoginToSpotify from "../LoginToSpotify";
 function Navbar() {
   return (
-    <>
-<Header />
     <div className='sidebar'>
       <h1 className='logo'>🎶Fakeify&reg;</h1>
       <Link to="/home" className='sidebarOption'>
@@ -50,7 +48,6 @@ function Navbar() {
       <SidebarOption title='Rock' />
       <SidebarOption title='Rnb' />
     </div>
-    </>
   )
 }
 
