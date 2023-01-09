@@ -109,7 +109,7 @@ function handleSubmit(e){
 
 
 name='search'
-type='text' 
+ 
 value={search.search}
 onChange ={handleChange}
 />
