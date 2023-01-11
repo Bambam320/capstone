@@ -12,7 +12,7 @@ class SpotifyApiController < ApplicationController
   end
 
   def callback
-    byebug
+    puts params
   end
 end
 

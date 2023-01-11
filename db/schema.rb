@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_31_035859) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_11_182648) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -39,10 +39,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_035859) do
     t.string "name"
     t.string "image"
     t.string "description"
-    t.integer "song_count"
-    t.boolean "favorite"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "spotify_id"
+    t.string "type_of_playlist"
   end
 
   create_table "songs", force: :cascade do |t|

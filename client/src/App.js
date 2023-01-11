@@ -61,7 +61,7 @@ const App = () => {
           <Grid item sx={{flexGrow: 1}}>
             <Header />
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
+              <Route path="/" element={<Home />} />
               {/* <Route path='/search' element={<Search />} /> */}
               <Route path="/playlists/:id" element={<Playlist />} />
               {/* <Route path='/collection/' element={<CollectionHeader />} >
