@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+
 import { SpotifyContext } from "../SpotifyContext";
 
 //imports styles

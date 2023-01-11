@@ -30,18 +30,19 @@ import Paper from '@mui/material/Paper';
 function Header() {
 
   const [search, setSearch] = useState("")
-  console.log(search)
 
   function handleChange(e) {
     setSearch(e.target.value)
   }
 
   function handleSubmit(e) {
-    console.log('handle submit is working in search bar')
     e.preventDefault()
-    fetch(`/spotify_api/${search}`)
-      .then((r) => r.json())
-      .then((results) => console.log(results))
+    console.log('handle submit is working in search bar')
+    console.log(search)
+
+    // fetch(`/spotify_api/${search}`)
+    //   .then((r) => r.json())
+    //   .then((results) => console.log(results))
   }
   const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
 
@@ -59,7 +60,8 @@ function Header() {
   }
 
 
-
+  
+  // styling for the users menu
   const StyledMenu = styled((props) => (
     <Menu
       elevation={0}
@@ -72,12 +74,12 @@ function Header() {
         horizontal: 'right',
       }}
       {...props}
-    />
-  ))(({ theme }) => ({
-    '& .MuiPaper-root': {
-      borderRadius: 6,
-      marginTop: theme.spacing(1),
-      minWidth: 180,
+      />
+      ))(({ theme }) => ({
+        '& .MuiPaper-root': {
+          borderRadius: 6,
+          marginTop: theme.spacing(1),
+          minWidth: 180,
       color:
         theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
       boxShadow:
@@ -100,7 +102,8 @@ function Header() {
       },
     },
   }));
-
+  
+  // add open and close toggling to the logged in user menu at the top right header
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -110,72 +113,74 @@ function Header() {
     setAnchorEl(null);
   };
 
-
+  //handles rendering the profile page
+  function handleMyProfile () {
+    console.log('handling my profile')
+    setAnchorEl(null);
+  }
+  
+  
   return (
-    <div className='body'>
-    <div className='header'>
-      <div className='header__left'>
-        <form onSubmit={handleSubmit}>
-        <Paper
-      component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-    >
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Search for Songs, Artists or albums"
-      />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+  
+      <div className='header'>
+        <div className='header__left'>
+          <form onSubmit={handleSubmit}>
+            <Paper
+              component="form"
+              elevation={0}
+              sx={{ display: 'flex', alignItems: 'center', width: 500 }}
+            >
+              <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder="Search for Songs, Artists or Albums"
+                type='text'
+                name='search'
+                value={search}
+                onChange={handleChange}
+              />
+              <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                <SearchIcon onClick={handleSubmit} />
+              </IconButton>
+            </Paper>
+          </form>
+        </div>
 
-      <SearchIcon onClick={handleSubmit}/>
-      </IconButton>
-      </Paper>
+        <div className='header__right'>
 
-          {/* <SearchIcon />
-          <input placeholder='Search for Artists, Songs, or Artists' 
-            type='text'
-            name='search'
-            value={search.search}
-            onChange={handleChange}
-          /> */}
-        </form>
+          <Button
+            id="demo-customized-button"
+            aria-controls={open ? 'demo-customized-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            variant="contained"
+            disableElevation
+            onClick={handleClick}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+            <Avatar className="Avatar" />
+            Name
+          </Button>
+          <StyledMenu
+            id="demo-customized-menu"
+            MenuListProps={{
+              'aria-labelledby': 'demo-customized-button',
+            }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleMyProfile} disableRipple>
+              <AccountBoxIcon />
+              My Profile
+            </MenuItem>
+            <Divider sx={{ my: 0.5 }} />
+            <MenuItem onClick={handleLogout} disableRipple>
+              Log out
+            </MenuItem>
+          </StyledMenu>
+        </div>
       </div>
 
-      <div className='header__right'>
-
-        <Button
-          id="demo-customized-button"
-          aria-controls={open ? 'demo-customized-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          variant="contained"
-          disableElevation
-          onClick={handleClick}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          <Avatar className="Avatar" />
-          Name
-        </Button>
-        <StyledMenu
-          id="demo-customized-menu"
-          MenuListProps={{
-            'aria-labelledby': 'demo-customized-button',
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose} disableRipple>
-            <AccountBoxIcon />
-            My Profile
-          </MenuItem>
-          <Divider sx={{ my: 0.5 }} />
-          <MenuItem onClick={handleLogout} disableRipple>
-            Log out
-          </MenuItem>
-        </StyledMenu>
-      </div>
-    </div>
-    </div>
   );
 }
 

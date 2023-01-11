@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -7,11 +7,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Grid from '@mui/material/Grid';
 import SidebarOption from "./SidebarOption";
 import "./LoginToSpotify.css";
 
 function LoginToSpotify() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(true);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,37 +24,38 @@ function LoginToSpotify() {
   return (
     <div>
       {" "}
-      <Button onClick={handleClickOpen}>
-        <SidebarOption Icon={LoginIcon} title='Login to Spotify' />
-      </Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Login to Spotify.</DialogTitle>
+      <Dialog open={open} onClose={handleClose} >
+        <DialogTitle>Login with your Spotify account.</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To login to this Spotify, please enter your username and password.
+            Please enter your username and password.
           </DialogContentText>
+<Grid container spacing={1} 
+  justifyContent='center'
+  alignItems="center"
+  direction="space-between"
+  >
+  <Grid item xs={8} >
+
           <TextField
-            className='textField'
             autoFocus
             margin='dense'
             id='name'
             label='Username'
             type='text'
-            rows={2}
-            multiline
             variant='standard'
           />
           <TextField
-            className='textField'
             autoFocus
             margin='dense'
             id='name'
             label='Password'
             type='password'
-            multiline
-            rows={2}
             variant='standard'
-          />
+            />
+            </Grid>
+
+            </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

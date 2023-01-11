@@ -1,21 +1,52 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+//functional imports
+import React, { useState, useContext } from "react";
+import { SpotifyContext } from "../SpotifyContext";
+import { Link, useNavigate } from 'react-router-dom';
 
-import "../Sidebar.css";
-import SidebarOption from "../SidebarOption";
-import HomeIcon from "@mui/icons-material/Home";
-import Header from '../Header';
-import SearchIcon from "@mui/icons-material/Search";
-import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
-import LoginIcon from "@mui/icons-material/Login";
+// material ui components
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import Button from '@mui/material/Button';
+import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import SearchIcon from "@mui/icons-material/Search";
+import { Typography } from "@mui/material";
 
+// css and component imports
 import "../Header.css";
+import "../Sidebar.css";
 import "../SidebarOption.css";
-
-
+import Header from '../Header';
 import LoginToSpotify from "../LoginToSpotify";
+import Playlist from '../Playlist';
+import SidebarOption from "../SidebarOption";
+
+
 function Navbar() {
+  const [errors, setErrors] = useState([])
+  const { setUser, setCurrentPlaylist } = useContext(SpotifyContext);
+  const navigate = useNavigate();
+
+  function handleCreateAndRouteToPlaylist() {
+    fetch('/playlists', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({instructions: "Make a new playlist, bitch!"})
+    }).then((response) => {
+      if (response.ok) {
+        response.json().then((newPlaylist) => {
+          setCurrentPlaylist(newPlaylist)
+          navigate(`/playlists/${newPlaylist.id}`)
+        });
+      } else {
+        response.json().then((err) => setErrors(err.errors));
+      }
+    })
+  }
+
+
   return (
     <div className='sidebar'>
       <h1 className='logo'>🎶Fakeify&reg;</h1>
@@ -31,13 +62,46 @@ function Navbar() {
         <LibraryMusicIcon className="sidebarOption_icon" />
         <h4>My Library</h4>
       </Link>
-      <Link to="/oauth/spotify" className='sidebarOption'>
+      <a component='a' href="http://localhost:3000/auth/spotify" className='sidebarOption' >
         <LoginIcon className="sidebarOption_icon" />
+        <h4>Sign in with Spotify</h4>
+      </a>
+      <Button className='sidebarOption'
+        sx={{
+          color: 'grey',
+          textTransform: 'none',
+          height: '30px',
+          marginLeft: '-8px',
+          fontSize: '16px',
+        }}
+        onClick={handleCreateAndRouteToPlaylist}
+      >
+        <AddBoxIcon className="sidebarOption_icon" />
+        <h4>Create A Playlist</h4>
+      </Button>
+      {/* <Link to={`playlist/${playlist.id}`} className="sidebarOption">
+        <AddBoxIcon className="sidebarOption_icon" />
+        <h4>Create A Playlist</h4>
+      </Link> */}
+
+
+
+      {/* <Button className='sidebarOption' 
+        sx={{color: 'grey', 
+          textTransform: 'none',
+          height: '30px',
+          marginLeft: '-8px',
+          fontSize: '16px',
+        }}
+        onClick={handleSpotifyLogin}
+      >
+        
         <h4>Login with Spotify</h4>
-      </Link>
-    
-      <br />
-      <strong className='sidebar_title'>PLAYLISTS</strong>
+      </Button> */}
+
+<Typography variant="h6" className='sidebar_title' sx={{marginTop: '2em', color: 'grey'}}>
+My Playlists 
+      </Typography>
       <hr />
       {/* {playlists?.items?.map(playlist =>(
         <sidebarOption title={playlist.name}/>

@@ -26,6 +26,7 @@ import Search from "@mui/icons-material/Search";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
+  const [currentPlaylist, setCurrentPlaylist] = useState({})
 
   // checks the browser session for a logged in user and automatically logs them in
   useEffect(() => {
@@ -39,9 +40,6 @@ const App = () => {
     });
   }, []);
 
-  console.log("user", user);
-  console.log("auth", isAuthenticated);
-
   if (!isAuthenticated)
     return (
       <SpotifyContext.Provider value={{ setIsAuthenticated, setUser }}>
@@ -52,7 +50,7 @@ const App = () => {
   return (
     <Router>
       <SpotifyContext.Provider
-        value={{ isAuthenticated, setIsAuthenticated, user, setUser }}
+        value={{ isAuthenticated, setIsAuthenticated, user, setUser, currentPlaylist, setCurrentPlaylist }}
       >
         <Grid container>
 
@@ -61,19 +59,18 @@ const App = () => {
           </Grid>
 
           <Grid item sx={{flexGrow: 1}}>
+            <Header />
             <Routes>
-              <Route path="/" element={<Header />} >
-                {/* <Route index element={<Home />} /> */}
-                <Route path='home' element={<Home />} />
-                <Route path='search' element={<Search />} />
-                <Route path='collection' element={<Playlist />} />
-                <Route path='oauth/spotify' element={<LoginToSpotify />} />
-              </Route>
+              {/* <Route path="/" element={<Home />} /> */}
+              {/* <Route path='/search' element={<Search />} /> */}
+              <Route path="/playlists/:id" element={<Playlist />} />
+              {/* <Route path='/collection/' element={<CollectionHeader />} >
+                <Route path='playlists' element={<Playlists />} />
+                <Route path='songs' element={<Songs />} />
+              </Route> */}              
             </Routes>
           </Grid>
         </Grid>
-
-
 
         <Footer />
 
