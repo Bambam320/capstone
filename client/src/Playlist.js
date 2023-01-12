@@ -26,28 +26,55 @@ function Playlist() {
   const [errors, setErrors] = useState([])
   const [open, setOpen] = useState(false);
   const params = useParams()
-
-  console.log("currentPlaylist from playlist", currentPlaylist)
-
+  const [form, setForm] = useState(currentPlaylist)
+  
+  console.log(currentPlaylist)
+  console.log("form", form)
+  
   useEffect(() => {
     if (currentPlaylist) {
       fetch(`/playlists/${params.id}`)
-        .then((res) => {
-          if (res.ok) {
+      .then((res) => {
+        if (res.ok) {
             res.json().then((playlist) => setCurrentPlaylist(playlist))
           } else {
             res.json().then((err) => setErrors(err.errors));
           }
         })
+      }
+    }, [])
+    
+    useEffect(() => {
+      setForm(currentPlaylist)
+    }, [currentPlaylist])
+    
+    function handleSave (e) {
+      e.preventDefault()
+      fetch(`/playlists/${currentPlaylist.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          description: form.description,
+          image: form.image
+        })
+      }).then((res) => {
+        if (res.ok) {
+          res.json().then((updatedPlaylist) => {
+            setCurrentPlaylist(updatedPlaylist)
+          });
+        } else {
+          res.json().then((err) => {
+            setErrors(err.error)});
+        }
+      })
     }
-  }, [])
 
-  console.log("user from playlist", user)
-  console.log("new playlist from Playlist", currentPlaylist)
-
-function handleSave () {
-  console.log("hitting handle save")
-}
+    function handleDialogUpdate (e) {
+      setForm({...form, [e.target.name]: e.target.value})
+    }
   
     const handleClickOpen = () => {
       setOpen(true);
@@ -68,48 +95,69 @@ function handleSave () {
           );
         })}
 
-<Grid item component={Button} onClick={handleClickOpen} >
+        <div onClick={handleClickOpen} >
 
         <img className="image_class" src={currentPlaylist.image} alt={currentPlaylist.name} />
-        <div className="body__infoText">
+        </div>
+        <div className="body__infoText" onClick={handleClickOpen}>
           <h4>{currentPlaylist.name}</h4>
           <p>{currentPlaylist.description}</p>
           <p>{`${user.username}'s playlist`}</p>
         </div>
-
-</Grid>
-     
-
-
-
-
     <div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit and update the details</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
+      <Dialog 
+        open={open} 
+        onClose={handleClose} 
+        sx={{backgroundColor: 'transparent'}}
+      >
+        <DialogTitle
+          sx={{backgroundColor: '#3b3637', color: 'white'}}
+        >Edit and update the details</DialogTitle>
+        <DialogContent
+          sx={{backgroundColor: '#3b3637'}}
+        >
+          <DialogContentText 
+            sx={{color: 'white'}}
+          >
+            Change the information below and click save to update your playlist!
           </DialogContentText>
-          <Grid container>
-            <Grid item>
-
-            </Grid>
-
-          </Grid>
           <TextField
-            autoFocus
+            sx={{ input: { color: 'white' } }}
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            name="name"
             fullWidth
             variant="standard"
+            onChange={handleDialogUpdate}
+            value={form.name}
+          />
+          <TextField
+            sx={{ input: { color: 'white' } }}
+            margin="dense"
+            name="description"
+            fullWidth
+            variant="standard"
+            onChange={handleDialogUpdate}
+            value={form.description}
+          />
+          <TextField
+            sx={{ input: { color: 'white' } }}
+            margin="dense"
+            name="image"
+            fullWidth
+            variant="standard"
+            onChange={handleDialogUpdate}
+            value={form.image}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+        <DialogActions
+          sx={{backgroundColor: '#3b3637'}}
+        >
+          <Button onClick={handleClose}
+            sx={{color: 'white'}}
+          >Cancel</Button>
+          <Button onClick={handleSave}
+            sx={{color: 'white'}}
+          >Save</Button>
         </DialogActions>
       </Dialog>
 

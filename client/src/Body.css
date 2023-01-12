@@ -16,9 +16,10 @@
 }
 
 .image_class {
-  height: 150px;
-  width: 500px;
-  box-shadow: 120px 80px 40px 20px rgb(245, 245, 245);
+  height: 175px;
+  width: 300px;
+  margin-right: 5em;
+  box-shadow: 10px 10px rgb(12, 11, 11);
 }
 
 .body__infoText {
