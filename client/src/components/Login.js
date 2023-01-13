@@ -8,13 +8,14 @@ import "./Login.css";
 function Login() {
 
   //assigns context
-  const { setUser, setIsAuthenticated } = useContext(SpotifyContext);
+  const { setLocalUser, setIsAuthenticated } = useContext(SpotifyContext);
 
   //assign state and default values
   const defaultFormValues = {
     username: "",
     password: "",
     password_confirmation: "",
+    avatar_url: "",
   };
   const [form, setForm] = useState(defaultFormValues);
   const [formType, setFormType] = useState("login");
@@ -52,7 +53,7 @@ function Login() {
       if (res.ok) {
         res.json().then((user) => {
           setIsAuthenticated(true)
-          setUser(user)
+          setLocalUser(user)
         });
       } else {
         res.json().then((err) => setErrors(err.error));
@@ -132,6 +133,14 @@ function Login() {
               value={form.password_confirmation}
               onChange={handleChange}
               required
+            />
+            <input
+              className=''
+              name='avatar_url'
+              type='text'
+              placeholder='Avatar image URL address'
+              value={form.avatar_url}
+              onChange={handleChange}
             />
             <button className='signup-button' onClick={handleSubmit}>
               SIGN UP TO FAKEIFY

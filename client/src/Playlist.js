@@ -20,72 +20,135 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import EditIcon from '@mui/icons-material/Edit';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import PersonIcon from '@mui/icons-material/Person';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import Paper from '@mui/material/Paper';
+
 function Playlist() {
-  const { currentPlaylist, setCurrentPlaylist, user } = useContext(SpotifyContext);
-  const [tracks, setTracks] = useState([])
-  const [errors, setErrors] = useState([])
+  const { currentPlaylist, setCurrentPlaylist, localUser } = useContext(SpotifyContext);
+  const [errors, setErrors] = useState([]);
+  const [form, setForm] = useState(currentPlaylist);
   const [open, setOpen] = useState(false);
-  const params = useParams()
-  const [form, setForm] = useState(currentPlaylist)
-  
-  console.log(currentPlaylist)
-  console.log("form", form)
-  
+  const [search, setSearch] = useState('');
+  const [tracks, setTracks] = useState([]);
+  const params = useParams();
+
   useEffect(() => {
-    if (currentPlaylist) {
+    if (!!currentPlaylist) {
       fetch(`/playlists/${params.id}`)
-      .then((res) => {
-        if (res.ok) {
+        .then((res) => {
+          if (res.ok) {
             res.json().then((playlist) => setCurrentPlaylist(playlist))
           } else {
             res.json().then((err) => setErrors(err.errors));
           }
         })
+    }
+  }, [])
+
+  useEffect(() => {
+    setForm(currentPlaylist)
+  }, [currentPlaylist])
+
+  function handleSave(e) {
+    e.preventDefault()
+    fetch(`/playlists/${currentPlaylist.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: form.name,
+        description: form.description,
+        image: form.image
+      })
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((updatedPlaylist) => {
+          setCurrentPlaylist(updatedPlaylist)
+        });
+      } else {
+        res.json().then((err) => {
+          setErrors(err.error)
+        });
       }
-    }, [])
-    
-    useEffect(() => {
-      setForm(currentPlaylist)
-    }, [currentPlaylist])
-    
-    function handleSave (e) {
-      e.preventDefault()
-      fetch(`/playlists/${currentPlaylist.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          description: form.description,
-          image: form.image
-        })
-      }).then((res) => {
+    })
+    setOpen(false);
+  }
+
+  function handleDialogUpdate(e) {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  function handleSearchSubmit(e) {
+    e.preventDefault()
+    fetch(`/spotify_api/${search}`)
+      .then((res) => {
         if (res.ok) {
-          res.json().then((updatedPlaylist) => {
-            setCurrentPlaylist(updatedPlaylist)
-          });
+          res.json().then((tracks) => {
+            setTracks(tracks)
+          })
         } else {
           res.json().then((err) => {
-            setErrors(err.error)});
+            setErrors(err.error)
+          });
         }
       })
-    }
+      setSearch('')
+  }
 
-    function handleDialogUpdate (e) {
-      setForm({...form, [e.target.name]: e.target.value})
-    }
-  
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+  function handleSearchInputChange(e) {
+    setSearch(e.target.value)
+  }
+
+console.log(tracks)
+console.log(tracks.length)
+
+  function handleAddTrack (track) {
+    fetch(`/playlists/${currentPlaylist.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({trackId: track.id})
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((updatedPlaylist) => {
+          setCurrentPlaylist(updatedPlaylist)
+        });
+      } else {
+        res.json().then((err) => {
+          setErrors(err.error)
+        });
+      }
+    })
+  }
+
 
   return (
-    <Grid className="body">
+    <>
+    <Grid container className="body">
       <div className="body__info">
         {errors.map((error) => {
           return (
@@ -97,92 +160,115 @@ function Playlist() {
 
         <div onClick={handleClickOpen} >
 
-        <img className="image_class" src={currentPlaylist.image} alt={currentPlaylist.name} />
+          <img className="image_class" src={currentPlaylist.image} alt={currentPlaylist.name} />
         </div>
         <div className="body__infoText" onClick={handleClickOpen}>
           <h4>{currentPlaylist.name}</h4>
           <p>{currentPlaylist.description}</p>
-          <p>{`${user.username}'s playlist`}</p>
+          <p>{`${localUser.username}'s playlist`}</p>
         </div>
-    <div>
-      <Dialog 
-        open={open} 
-        onClose={handleClose} 
-        sx={{backgroundColor: 'transparent'}}
-      >
-        <DialogTitle
-          sx={{backgroundColor: '#3b3637', color: 'white'}}
-        >Edit and update the details</DialogTitle>
-        <DialogContent
-          sx={{backgroundColor: '#3b3637'}}
-        >
-          <DialogContentText 
-            sx={{color: 'white'}}
+        <div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            sx={{ backgroundColor: 'transparent' }}
           >
-            Change the information below and click save to update your playlist!
-          </DialogContentText>
-          <TextField
-            sx={{ input: { color: 'white' } }}
-            margin="dense"
-            name="name"
-            fullWidth
-            variant="standard"
-            onChange={handleDialogUpdate}
-            value={form.name}
-          />
-          <TextField
-            sx={{ input: { color: 'white' } }}
-            margin="dense"
-            name="description"
-            fullWidth
-            variant="standard"
-            onChange={handleDialogUpdate}
-            value={form.description}
-          />
-          <TextField
-            sx={{ input: { color: 'white' } }}
-            margin="dense"
-            name="image"
-            fullWidth
-            variant="standard"
-            onChange={handleDialogUpdate}
-            value={form.image}
-          />
-        </DialogContent>
-        <DialogActions
-          sx={{backgroundColor: '#3b3637'}}
-        >
-          <Button onClick={handleClose}
-            sx={{color: 'white'}}
-          >Cancel</Button>
-          <Button onClick={handleSave}
-            sx={{color: 'white'}}
-          >Save</Button>
-        </DialogActions>
-      </Dialog>
+            <DialogTitle
+              sx={{ backgroundColor: '#3b3637', color: 'white' }}
+            >Edit and update the details</DialogTitle>
+            <DialogContent
+              sx={{ backgroundColor: '#3b3637' }}
+            >
+              <DialogContentText
+                sx={{ color: 'white' }}
+              >
+                Change the information below and click save to update your playlist!
+              </DialogContentText>
+              <TextField
+                sx={{ input: { color: 'white' } }}
+                margin="dense"
+                name="name"
+                fullWidth
+                variant="standard"
+                onChange={handleDialogUpdate}
+                value={form.name}
+              />
+              <TextField
+                sx={{ input: { color: 'white' } }}
+                margin="dense"
+                name="description"
+                fullWidth
+                variant="standard"
+                onChange={handleDialogUpdate}
+                value={form.description}
+              />
+              <TextField
+                sx={{ input: { color: 'white' } }}
+                margin="dense"
+                name="image"
+                fullWidth
+                variant="standard"
+                onChange={handleDialogUpdate}
+                value={form.image}
+              />
+            </DialogContent>
+            <DialogActions
+              sx={{ backgroundColor: '#3b3637' }}
+            >
+              <Button onClick={handleClose}
+                sx={{ color: 'white' }}
+              >Cancel</Button>
+              <Button onClick={handleSave}
+                sx={{ color: 'white' }}
+              >Save</Button>
+            </DialogActions>
+          </Dialog>
 
-          
+
         </div>
       </div>
-      <div className="body__songs">
-        <div className="body__icons">
-          this is where stuff will be
-          {/* <PlayCircleFilled className="body__shuffle" />
-        <Favorite fontSize="large" />
-        <MoreHoriz /> */}
-        </div>
-        this is for other stuff
-        {tracks.name ?
-          tracks.track.map((track) => {
-            <SongRow track={track} />
+        </Grid>
+      <Grid container>
+
+      <Grid item>
+        <form onSubmit={handleSearchSubmit}>
+          <Paper
+            component="form"
+            elevation={0}
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              width: 250,
+              marginLeft: '2em',
+              backgroundColor: 'grey'
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search for Songs, Artists or Albums"
+              type='text'
+              name='search'
+              value={search}
+              onChange={handleSearchInputChange}
+              />
+            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+              <SearchIcon onClick={handleSearchSubmit} />
+            </IconButton>
+          </Paper>
+        </form>
+      </Grid>
+      <Grid item>
+        {tracks.length > 0 ?
+          tracks.map((track) => {
+            return <SongRow track={track} key={track.id} onAddTrack={handleAddTrack} />
           })
           :
           <></>
         }
-        add styling and search and list for songs
-        add current user to top right header
-      </div>
+      </Grid>
+
     </Grid>
+              </>
   )
 }
 

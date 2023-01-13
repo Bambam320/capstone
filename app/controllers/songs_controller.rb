@@ -49,3 +49,4 @@ class SongsController < ApplicationController
       params.fetch(:song, {})
     end
 end
+

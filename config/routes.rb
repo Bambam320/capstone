@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :spotify_api, only: [:show]
+  resources :spotify_api, only: [:show, :index]
   resources :artists, only: [:index, :show, :create, :update, :destroy]
   resources :albums, only: [:index, :show, :create, :update, :destroy]
   resources :songs, only: [:index, :show, :create, :update, :destroy]
@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   get "auth/spotify/callback", to: "spotify_api#callback"
+  get "spotify_api/:search", to: "spotify_api#search_for_tracks"
 
   get '*path',
   to: 'fallback#index',

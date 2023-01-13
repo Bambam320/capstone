@@ -24,7 +24,7 @@ import SidebarOption from "../SidebarOption";
 
 function Navbar() {
   const [errors, setErrors] = useState([])
-  const { setUser, setCurrentPlaylist } = useContext(SpotifyContext);
+  const { setCurrentPlaylist, localUser } = useContext(SpotifyContext);
   const navigate = useNavigate();
 
   function handleCreateAndRouteToPlaylist() {
@@ -76,40 +76,22 @@ function Navbar() {
         }}
         onClick={handleCreateAndRouteToPlaylist}
       >
-        <AddBoxIcon className="sidebarOption_icon" />
-        <h4>Create A Playlist</h4>
+        <AddBoxIcon 
+          className="sidebarOption_icon" 
+          
+        />
+        <h4 >Create A Playlist</h4>
       </Button>
-      {/* <Link to={`playlist/${playlist.id}`} className="sidebarOption">
-        <AddBoxIcon className="sidebarOption_icon" />
-        <h4>Create A Playlist</h4>
-      </Link> */}
-
-
-
-      {/* <Button className='sidebarOption' 
-        sx={{color: 'grey', 
-          textTransform: 'none',
-          height: '30px',
-          marginLeft: '-8px',
-          fontSize: '16px',
-        }}
-        onClick={handleSpotifyLogin}
-      >
-        
-        <h4>Login with Spotify</h4>
-      </Button> */}
 
 <Typography variant="h6" className='sidebar_title' sx={{marginTop: '2em', color: 'grey'}}>
 My Playlists 
       </Typography>
       <hr />
-      {/* {playlists?.items?.map(playlist =>(
+      {localUser?.playlists.map((playlist) =>(
         <sidebarOption title={playlist.name}/>
-      ))} */}
+      ))}
 
-      {/* Hardcoded for now 👇*/}
-      <SidebarOption title='Hip Hop' />
-      <SidebarOption title='Rock' />
+
       <SidebarOption title='Rnb' />
     </div>
   )
