@@ -40,8 +40,6 @@ const App = () => {
     });
   }, []);
 
-  console.log(localUser)
-
   if (!isAuthenticated)
     return (
       <SpotifyContext.Provider value={{ setIsAuthenticated, setLocalUser }}>
@@ -57,11 +55,11 @@ const App = () => {
         <Grid container>
 
           <Grid item >
-            <Navbar />
+          <Navbar />
           </Grid>
 
           <Grid item sx={{flexGrow: 1}}>
-            <Header />
+            <Header /> 
             <Routes>
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/home" element={<Home />} />

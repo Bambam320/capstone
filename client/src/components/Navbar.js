@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 // material ui components
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { Avatar } from "@mui/material";
 import Button from '@mui/material/Button';
 import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
@@ -27,6 +28,8 @@ function Navbar() {
   const { setCurrentPlaylist, localUser } = useContext(SpotifyContext);
   const navigate = useNavigate();
 
+console.log("im rendering")
+
   function handleCreateAndRouteToPlaylist() {
     fetch('/playlists', {
       method: "POST",
@@ -46,6 +49,22 @@ function Navbar() {
     })
   }
 
+  let listUserPlaylists = localUser.playlists.map((playlist) => {
+      return(
+        <Link 
+          to={`playlists/${playlist.id}`}
+          className='sidebarPlaylists'
+          key={playlist.id}
+        >
+          <Avatar 
+            src={playlist.image}
+            className="sidebarOption_icon"  
+          /> 
+          <h4>{playlist.name}</h4>
+        </Link> 
+
+      )
+    })
 
   return (
     <div className='sidebar'>
@@ -87,12 +106,10 @@ function Navbar() {
 My Playlists 
       </Typography>
       <hr />
-      {localUser?.playlists.map((playlist) =>(
-        <sidebarOption title={playlist.name}/>
-      ))}
+      {listUserPlaylists}
 
 
-      <SidebarOption title='Rnb' />
+  
     </div>
   )
 }
