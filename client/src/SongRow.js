@@ -1,5 +1,6 @@
 import React from 'react'
 import './SongRow.css'
+import './SidebarOption'
 
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -24,11 +25,34 @@ function SongRow({ track, onAddTrack }) {
         </Grid>
 
       <Grid item xs={3}>
-        <Button>Play Preview</Button>
+        <Button 
+          className='sidebarOption'
+          sx={{
+            color: 'grey',
+            textTransform: 'none',
+            height: '30px',
+            marginLeft: '-8px',
+            fontSize: '16px',
+          }}
+        >
+          <h4>Play Preview</h4>
+        </Button>
       </Grid>
 
       <Grid item xs={3}>
-        <Button onClick={onAddTrack(track)}>Add to Playlist</Button>
+        <Button 
+          onClick={() => {onAddTrack(track)}} 
+          className='sidebarOption'
+          sx={{
+            color: 'grey',
+            textTransform: 'none',
+            height: '30px',
+            marginLeft: '-8px',
+            fontSize: '16px',
+          }}
+        >
+          <h4>Add to Playlist</h4>
+        </Button>
       </Grid>
 
     </Grid>

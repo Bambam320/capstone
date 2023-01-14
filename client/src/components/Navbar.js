@@ -25,10 +25,10 @@ import SidebarOption from "../SidebarOption";
 
 function Navbar() {
   const [errors, setErrors] = useState([])
-  const { setCurrentPlaylist, localUser } = useContext(SpotifyContext);
+  const { setCurrentPlaylist, localUser, setLocalUser } = useContext(SpotifyContext);
   const navigate = useNavigate();
 
-console.log("im rendering")
+  console.log("im rendering")
 
   function handleCreateAndRouteToPlaylist() {
     fetch('/playlists', {
@@ -36,12 +36,13 @@ console.log("im rendering")
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({instructions: "Make a new playlist, bitch!"})
+      body: JSON.stringify({ instructions: "Make a new playlist, bitch!" })
     }).then((response) => {
       if (response.ok) {
         response.json().then((newPlaylist) => {
           setCurrentPlaylist(newPlaylist)
-          navigate(`/playlists/${newPlaylist.id}`)
+          setLocalUser({...localUser, playlists: [...localUser.playlists, newPlaylist]})
+          setTimeout(navigate(`/playlists/${newPlaylist.id}`), 1000)
         });
       } else {
         response.json().then((err) => setErrors(err.errors));
@@ -49,22 +50,28 @@ console.log("im rendering")
     })
   }
 
-  let listUserPlaylists = localUser.playlists.map((playlist) => {
-      return(
-        <Link 
+  const ListUserPlaylists = () => {
+    console.log("listUserPlaylists is firing localUser", localUser)
+    let updatedPlaylistLinks = localUser.playlists
+      .sort((a, b) => a.id - b.id)
+      .map((playlist) => {
+        console.log("just before the return fires")
+      return (
+        <Link
           to={`playlists/${playlist.id}`}
           className='sidebarPlaylists'
-          key={playlist.id}
+          key={playlist.name}
         >
-          <Avatar 
+          <Avatar
             src={playlist.image}
-            className="sidebarOption_icon"  
-          /> 
+            className="sidebarOption_icon"
+          />
           <h4>{playlist.name}</h4>
-        </Link> 
-
+        </Link>
       )
     })
+    return updatedPlaylistLinks
+  }
 
   return (
     <div className='sidebar'>
@@ -95,21 +102,17 @@ console.log("im rendering")
         }}
         onClick={handleCreateAndRouteToPlaylist}
       >
-        <AddBoxIcon 
-          className="sidebarOption_icon" 
-          
+        <AddBoxIcon
+          className="sidebarOption_icon"
         />
         <h4 >Create A Playlist</h4>
       </Button>
 
-<Typography variant="h6" className='sidebar_title' sx={{marginTop: '2em', color: 'grey'}}>
-My Playlists 
+      <Typography variant="h6" className='sidebar_title' sx={{ marginTop: '2em', color: 'grey' }}>
+        My Playlists
       </Typography>
       <hr />
-      {listUserPlaylists}
-
-
-  
+      <ListUserPlaylists />
     </div>
   )
 }

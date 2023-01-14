@@ -17,25 +17,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-
-
+import InputAdornment from '@mui/material/InputAdornment';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import PersonIcon from '@mui/icons-material/Person';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
-import MenuIcon from '@mui/icons-material/Menu';
+import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 
 function Playlist() {
   const { currentPlaylist, setCurrentPlaylist, localUser, setLocalUser } = useContext(SpotifyContext);
@@ -48,14 +39,20 @@ function Playlist() {
   const navigate = useNavigate();
 
   useEffect(() => {
-  console.log("state of playlist", !!currentPlaylist)
-    if (params.id.length < 20 && !!currentPlaylist) {
-      let currentPlaylist = localUser.playlists.find((playlist) => playlist.id.toString() === params.id)
-      setCurrentPlaylist(currentPlaylist)
+  console.log("state of playlist", currentPlaylist)
+    if (params.id.length < 20 ) {
+      console.log("params are a length of less than 20")
+      let thisPagesPlaylist = localUser.playlists.find((playlist) => {
+        // debugger
+        if (playlist.id.toString() === params.id) {
+          return playlist
+        }
+      })
+      setCurrentPlaylist(thisPagesPlaylist)
     }
     //going to have to add the logic to fetch a playlist from spotify for
     //spotify_users playlists and for specific search
-  }, [params])
+  }, [params, localUser])
 
   useEffect(() => {
     setForm(currentPlaylist)
@@ -77,6 +74,15 @@ function Playlist() {
       if (res.ok) {
         res.json().then((updatedPlaylist) => {
           setCurrentPlaylist(updatedPlaylist)
+          let updatedPlaylists = localUser.playlists.map((pl) => {
+            if (params.id === pl.id.toString()) {
+              return updatedPlaylist
+            } else {
+              return pl
+            }
+          })
+       
+          setLocalUser({...localUser, playlists: updatedPlaylists})
         });
       } else {
         res.json().then((err) => {
@@ -86,7 +92,57 @@ function Playlist() {
     })
     setOpen(false);
   }
+  
+  function handleAddTrack(track) {
+    console.log("handle add track firing")
+    fetch(`/playlists/${currentPlaylist.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ trackId: track.id })
+    }).then((res) => {
+      if (res.ok) {
+        res.json().then((updatedPlaylist) => {
+          setCurrentPlaylist(updatedPlaylist)
+          let updatedPlaylists = localUser.playlists.map((pl) => {
+            if (params.id === pl.id) {
+              return updatedPlaylist
+            } else {
+              return pl
+            }
+          })
+          setLocalUser({...localUser, playlists: [updatedPlaylists]})
+        });
+      } else {
+        res.json().then((err) => {
+          setErrors(err.error)
+        });
+      }
+    })
+  }
 
+  function handleDeletePlaylist (e) {
+    e.preventDefault()
+    fetch(`/playlists/${currentPlaylist.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(),
+    }).then((res) => {
+      if (res.ok) {
+        let updatedPlaylists = localUser.playlists.filter((pl) => currentPlaylist.id !== pl.id)
+        setLocalUser({...localUser, playlists: updatedPlaylists})
+        setCurrentPlaylist({})
+        navigate("/home")
+      } else {
+        res.json().then((err) => {
+          setErrors(err.errors)});
+      }
+    })
+    handleCloseDeleteMenu()
+  }
   function handleDialogUpdate(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
@@ -97,9 +153,11 @@ function Playlist() {
 
   const handleClose = () => {
     setOpen(false);
+    setForm(currentPlaylist)
   };
 
   function handleSearchSubmit(e) {
+    console.log("handle search submit firing")
     e.preventDefault()
     fetch(`/spotify_api/${search}`)
       .then((res) => {
@@ -120,26 +178,6 @@ function Playlist() {
     setSearch(e.target.value)
   }
 
-  function handleAddTrack(track) {
-    fetch(`/playlists/${currentPlaylist.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ trackId: track.id })
-    }).then((res) => {
-      if (res.ok) {
-        res.json().then((updatedPlaylist) => {
-          setCurrentPlaylist(updatedPlaylist)
-        });
-      } else {
-        res.json().then((err) => {
-          setErrors(err.error)
-        });
-      }
-    })
-  }
-
 
 
 
@@ -156,28 +194,12 @@ function Playlist() {
 
 
 
-  function handleDeletePlaylist (e) {
 
-    e.preventDefault()
-    fetch(`/playlists/${currentPlaylist.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(),
-    }).then((res) => {
-      if (res.ok) {
-        let updatedPlaylists = localUser.playlists.filter((pl) => currentPlaylist.id !== pl.id)
-        setLocalUser({...localUser, playlists: [updatedPlaylists]})
-        navigate("/home")
-      } else {
-        res.json().then((err) => {
-          setErrors(err.errors)});
-      }
-    })
-    handleCloseDeleteMenu()
-  }
-
+  const handleFormNameClear = (val) => {
+    console.log('onclick')
+ 
+  setForm({...form, [val]: ''})
+}
 
   return (
     <>
@@ -225,7 +247,21 @@ function Playlist() {
                   variant="standard"
                   onChange={handleDialogUpdate}
                   value={form.name}
+                  InputProps={{
+                    endAdornment: (
+                      <div >
+                      <InputAdornment>
+                        <IconButton onClick={() => { handleFormNameClear('name')}}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                      </div>
+                    )
+                  }}
                 />
+
+
+
                 <TextField
                   sx={{ input: { color: 'white' } }}
                   margin="dense"
@@ -234,6 +270,17 @@ function Playlist() {
                   variant="standard"
                   onChange={handleDialogUpdate}
                   value={form.description}
+                  InputProps={{
+                    endAdornment: (
+                      <div >
+                      <InputAdornment>
+                        <IconButton onClick={() => { handleFormNameClear('description')}}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                      </div>
+                    )
+                  }}
                 />
                 <TextField
                   sx={{ input: { color: 'white' } }}
@@ -243,6 +290,17 @@ function Playlist() {
                   variant="standard"
                   onChange={handleDialogUpdate}
                   value={form.image}
+                  InputProps={{
+                    endAdornment: (
+                      <div >
+                      <InputAdornment>
+                        <IconButton onClick={() => { handleFormNameClear('image')}}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                      </div>
+                    )
+                  }}
                 />
               </DialogContent>
               <DialogActions

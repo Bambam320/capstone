@@ -73,7 +73,7 @@ const App = () => {
           </Grid>
         </Grid>
 
-        {/* <Footer /> */}
+        <Footer />
 
       </SpotifyContext.Provider>
     </Router>
