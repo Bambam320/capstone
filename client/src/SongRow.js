@@ -4,6 +4,8 @@ import './SidebarOption'
 
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import AddIcon from '@mui/icons-material/Add';
 
 function SongRow({ track, onAddTrack }) {
   return (
@@ -14,7 +16,7 @@ function SongRow({ track, onAddTrack }) {
         <img src={track.album.images[0].url} alt="" className="songRow__album" />
         </Grid>
 
-        <Grid item xs={5}>
+        <Grid item xs={8}>
         <div className="songRow__info">
           <h1>{track.name}</h1>
           <p>
@@ -35,11 +37,9 @@ function SongRow({ track, onAddTrack }) {
             fontSize: '16px',
           }}
         >
-          <h4>Play Preview</h4>
+        <PlayCircleIcon sx={{marginRight: '5px'}}/>
+          <h4>Track</h4>
         </Button>
-      </Grid>
-
-      <Grid item xs={3}>
         <Button 
           onClick={() => {onAddTrack(track)}} 
           className='sidebarOption'
@@ -51,7 +51,8 @@ function SongRow({ track, onAddTrack }) {
             fontSize: '16px',
           }}
         >
-          <h4>Add to Playlist</h4>
+          <AddIcon sx={{marginRight: '5px'}} />
+          <h4>To Playlist</h4>
         </Button>
       </Grid>
 

@@ -28,7 +28,9 @@ import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 
 
+
 function Playlist() {
+  // sets state, params, navigate and context
   const { currentPlaylist, setCurrentPlaylist, localUser, setLocalUser } = useContext(SpotifyContext);
   const [errors, setErrors] = useState([]);
   const [form, setForm] = useState(currentPlaylist);
@@ -38,26 +40,24 @@ function Playlist() {
   const params = useParams();
   const navigate = useNavigate();
 
+  // sets the playlist from the id in the url
   useEffect(() => {
-  console.log("state of playlist", currentPlaylist)
-    if (params.id.length < 20 ) {
-      console.log("params are a length of less than 20")
+    if (params.id.length < 20) {
       let thisPagesPlaylist = localUser.playlists.find((playlist) => {
-        // debugger
         if (playlist.id.toString() === params.id) {
           return playlist
         }
       })
       setCurrentPlaylist(thisPagesPlaylist)
     }
-    //going to have to add the logic to fetch a playlist from spotify for
-    //spotify_users playlists and for specific search
   }, [params, localUser])
 
+  //sets the form in state used in updating from the currentplaylist
   useEffect(() => {
     setForm(currentPlaylist)
   }, [currentPlaylist])
 
+  // sends the updates attributes of the playlist to the backend and updates state with the updated playlist
   function handleSave(e) {
     e.preventDefault()
     fetch(`/playlists/${currentPlaylist.id}`, {
@@ -81,8 +81,7 @@ function Playlist() {
               return pl
             }
           })
-       
-          setLocalUser({...localUser, playlists: updatedPlaylists})
+          setLocalUser({ ...localUser, playlists: updatedPlaylists })
         });
       } else {
         res.json().then((err) => {
@@ -92,9 +91,9 @@ function Playlist() {
     })
     setOpen(false);
   }
-  
+
+  // adds track to currentplaylist then updates state with the updated playlist from the backend
   function handleAddTrack(track) {
-    console.log("handle add track firing")
     fetch(`/playlists/${currentPlaylist.id}`, {
       method: "PATCH",
       headers: {
@@ -112,7 +111,7 @@ function Playlist() {
               return pl
             }
           })
-          setLocalUser({...localUser, playlists: [updatedPlaylists]})
+          setLocalUser({ ...localUser, playlists: [updatedPlaylists] })
         });
       } else {
         res.json().then((err) => {
@@ -122,7 +121,8 @@ function Playlist() {
     })
   }
 
-  function handleDeletePlaylist (e) {
+  // deletes the current playlist and updates states by removing it
+  function handleDeletePlaylist(e) {
     e.preventDefault()
     fetch(`/playlists/${currentPlaylist.id}`, {
       method: "DELETE",
@@ -133,33 +133,22 @@ function Playlist() {
     }).then((res) => {
       if (res.ok) {
         let updatedPlaylists = localUser.playlists.filter((pl) => currentPlaylist.id !== pl.id)
-        setLocalUser({...localUser, playlists: updatedPlaylists})
+        setLocalUser({ ...localUser, playlists: updatedPlaylists })
         setCurrentPlaylist({})
         navigate("/home")
       } else {
         res.json().then((err) => {
-          setErrors(err.errors)});
+          setErrors(err.errors)
+        });
       }
     })
     handleCloseDeleteMenu()
   }
-  function handleDialogUpdate(e) {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setForm(currentPlaylist)
-  };
-
+  
+  //handles the search submit 
   function handleSearchSubmit(e) {
-    console.log("handle search submit firing")
     e.preventDefault()
-    fetch(`/spotify_api/${search}`)
+    fetch(`/spotify_api/songs/${search}`)
       .then((res) => {
         if (res.ok) {
           res.json().then((tracks) => {
@@ -171,18 +160,31 @@ function Playlist() {
           });
         }
       })
-    setSearch('')
-  }
+      setSearch('')
+    }
 
+    //updates the form in state with the changed input values from the form
+    function handleDialogUpdate(e) {
+      setForm({ ...form, [e.target.name]: e.target.value })
+    }
+  
+    //handles opening and closing the form
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleClose = () => {
+      setOpen(false);
+      setForm(currentPlaylist)
+    };
+
+  //updates state held search value for song search input
   function handleSearchInputChange(e) {
     setSearch(e.target.value)
   }
 
+  console.log("tracks", tracks)
 
-
-
-
-
+  //menu open and close handling for the delete threedot button
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openDeletePlaylist = Boolean(anchorEl);
   const handleOpenDeleteMenu = (event) => {
@@ -192,17 +194,14 @@ function Playlist() {
     setAnchorEl(null);
   };
 
-
-
-
+  // clear input value in update form in dialog
   const handleFormNameClear = (val) => {
-    console.log('onclick')
- 
-  setForm({...form, [val]: ''})
-}
+    setForm({ ...form, [val]: '' })
+  }
 
   return (
     <>
+      {/* playlist information */}
       <Grid container className="body">
         <div className="body__info">
           {errors.map((error) => {
@@ -212,9 +211,7 @@ function Playlist() {
               </span>
             );
           })}
-
           <div onClick={handleClickOpen} >
-
             <img className="image_class" src={currentPlaylist.image} alt={currentPlaylist.name} />
           </div>
           <div className="body__infoText" onClick={handleClickOpen}>
@@ -222,6 +219,8 @@ function Playlist() {
             <p>{currentPlaylist.description}</p>
             <p>{`${localUser.username}'s playlist`}</p>
           </div>
+
+          {/* dialog for update menu */}
           <div>
             <Dialog
               open={open}
@@ -250,18 +249,15 @@ function Playlist() {
                   InputProps={{
                     endAdornment: (
                       <div >
-                      <InputAdornment>
-                        <IconButton onClick={() => { handleFormNameClear('name')}}>
-                          <ClearIcon />
-                        </IconButton>
-                      </InputAdornment>
+                        <InputAdornment>
+                          <IconButton onClick={() => { handleFormNameClear('name') }}>
+                            <ClearIcon />
+                          </IconButton>
+                        </InputAdornment>
                       </div>
                     )
                   }}
                 />
-
-
-
                 <TextField
                   sx={{ input: { color: 'white' } }}
                   margin="dense"
@@ -273,11 +269,11 @@ function Playlist() {
                   InputProps={{
                     endAdornment: (
                       <div >
-                      <InputAdornment>
-                        <IconButton onClick={() => { handleFormNameClear('description')}}>
-                          <ClearIcon />
-                        </IconButton>
-                      </InputAdornment>
+                        <InputAdornment>
+                          <IconButton onClick={() => { handleFormNameClear('description') }}>
+                            <ClearIcon />
+                          </IconButton>
+                        </InputAdornment>
                       </div>
                     )
                   }}
@@ -293,11 +289,11 @@ function Playlist() {
                   InputProps={{
                     endAdornment: (
                       <div >
-                      <InputAdornment>
-                        <IconButton onClick={() => { handleFormNameClear('image')}}>
-                          <ClearIcon />
-                        </IconButton>
-                      </InputAdornment>
+                        <InputAdornment>
+                          <IconButton onClick={() => { handleFormNameClear('image') }}>
+                            <ClearIcon />
+                          </IconButton>
+                        </InputAdornment>
                       </div>
                     )
                   }}
@@ -314,18 +310,13 @@ function Playlist() {
                 >Save</Button>
               </DialogActions>
             </Dialog>
-
-
           </div>
         </div>
       </Grid>
+
+      {/* delete icon and menu */}
       <Grid container>
-
         <Grid item>
-
-
-
-
           <div>
             <IconButton
               aria-label="more"
@@ -352,47 +343,41 @@ function Playlist() {
               anchorEl={anchorEl}
               open={openDeletePlaylist}
               onClose={handleCloseDeleteMenu}
-
             >
-
               <MenuItem onClick={handleDeletePlaylist}>
                 Delete Playlist
               </MenuItem>
-
             </Menu>
           </div>
 
-
-
-
-
-
-          <form onSubmit={handleSearchSubmit}>
-            <Paper
-              component="form"
-              elevation={0}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                width: 250,
-                marginLeft: '2em',
-                backgroundColor: 'grey'
-              }}
-            >
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search for Songs, Artists or Albums"
-                type='text'
-                name='search'
-                value={search}
-                onChange={handleSearchInputChange}
-              />
-              <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-                <SearchIcon onClick={handleSearchSubmit} />
-              </IconButton>
-            </Paper>
-          </form>
+          {/* search menu in playlist page to list songs to add */}
+          <Paper
+            component="form"
+            onSubmit={(e) => handleSearchSubmit(e)}
+            elevation={0}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: 250,
+              marginLeft: '2em',
+              backgroundColor: 'grey'
+            }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Search for Songs, Artists or Albums"
+              type='text'
+              name='search'
+              value={search}
+              onChange={handleSearchInputChange}
+            />
+            <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+              <SearchIcon onClick={(e) => handleSearchSubmit(e)} />
+            </IconButton>
+          </Paper>
         </Grid>
+
+        {/* List songs from search results */}
         <Grid item>
           {tracks.length > 0 ?
             tracks.map((track) => {

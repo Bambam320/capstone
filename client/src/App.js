@@ -16,9 +16,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import LoginToSpotify from "./LoginToSpotify";
 import Navbar from "./components/Navbar";
-import Player from "./Player";
+import Profile from "./components/Profile";
 import Playlist from "./Playlist";
-import Body from "./Body"
 
 // importing material ui components
 import Search from "@mui/icons-material/Search";
@@ -26,7 +25,8 @@ import Search from "@mui/icons-material/Search";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [localUser, setLocalUser] = useState({});
-  const [currentPlaylist, setCurrentPlaylist] = useState({})
+  const [currentPlaylist, setCurrentPlaylist] = useState({});
+  const [spotifyUser, setSpotifyUser] = useState('');
 
   // checks the browser session for a logged in user and automatically logs them in
   useEffect(() => {
@@ -50,7 +50,16 @@ const App = () => {
   return (
     <Router>
       <SpotifyContext.Provider
-        value={{ isAuthenticated, setIsAuthenticated, localUser, setLocalUser, currentPlaylist, setCurrentPlaylist }}
+        value={{ 
+          isAuthenticated, 
+          setIsAuthenticated, 
+          localUser, 
+          setLocalUser, 
+          currentPlaylist, 
+          setCurrentPlaylist,
+          spotifyUser,
+          setSpotifyUser
+        }}
       >
         <Grid container>
 
@@ -61,10 +70,11 @@ const App = () => {
           <Grid item sx={{flexGrow: 1}}>
             <Header /> 
             <Routes>
-              {/* <Route path="/" element={<Home />} /> */}
+              <Route index element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path='/search' element={<Search />} />
               <Route path="/playlists/:id" element={<Playlist />} />
+              <Route path="/profile" element={<Profile />} />
               {/* <Route path='/collection/' element={<CollectionHeader />} >
                 <Route path='playlists' element={<Playlists />} />
                 <Route path='songs' element={<Songs />} />

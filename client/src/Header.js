@@ -1,6 +1,7 @@
 //functional imports
 import React, { useContext, useState } from "react";
 import { SpotifyContext } from "./SpotifyContext";
+import { useNavigate } from 'react-router-dom';
 
 // imports styles and components
 import "./Header.css";
@@ -30,6 +31,7 @@ import Paper from '@mui/material/Paper';
 function Header() {
   // setting state for search field
   const [search, setSearch] = useState("")
+  const navigate = useNavigate();
 
   // brings state from context
   const { localUser, setLocalUser, setIsAuthenticated } = useContext(SpotifyContext);
@@ -118,7 +120,7 @@ function Header() {
 
   //handles rendering the profile page
   function handleMyProfile () {
-    console.log('handling my profile')
+    navigate('/profile')
     setAnchorEl(null);
   }
   

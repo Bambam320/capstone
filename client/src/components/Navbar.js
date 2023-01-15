@@ -24,12 +24,12 @@ import SidebarOption from "../SidebarOption";
 
 
 function Navbar() {
+  //sets state, context and navigate hooks
   const [errors, setErrors] = useState([])
   const { setCurrentPlaylist, localUser, setLocalUser } = useContext(SpotifyContext);
   const navigate = useNavigate();
 
-  console.log("im rendering")
-
+  // creates and sets a brand new playlist with default values and sets state with the new playlist
   function handleCreateAndRouteToPlaylist() {
     fetch('/playlists', {
       method: "POST",
@@ -50,6 +50,7 @@ function Navbar() {
     })
   }
 
+  //sort and map over users playlists and list them as links
   const ListUserPlaylists = () => {
     console.log("listUserPlaylists is firing localUser", localUser)
     let updatedPlaylistLinks = localUser.playlists
@@ -73,9 +74,13 @@ function Navbar() {
     return updatedPlaylistLinks
   }
 
+  function reload() {
+    window.location.reload();
+  }
+
   return (
     <div className='sidebar'>
-      <h1 className='logo'>🎶Fakeify&reg;</h1>
+      <h1 className='logo' onClick={() => {reload()}}>🎶Fakeify&reg;</h1>
       <Link to="/home" className='sidebarOption'>
         <HomeIcon className="sidebarOption_icon" />
         <h4>Home</h4>
@@ -88,7 +93,7 @@ function Navbar() {
         <LibraryMusicIcon className="sidebarOption_icon" />
         <h4>My Library</h4>
       </Link>
-      <a component='a' href="http://localhost:3000/auth/spotify" className='sidebarOption' >
+      <a component='a' href="http://localhost:3000/auth/spotify" className='sidebarOption' onClick={() => {console.log("a link is being fired")}}>
         <LoginIcon className="sidebarOption_icon" />
         <h4>Sign in with Spotify</h4>
       </a>

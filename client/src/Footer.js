@@ -1,4 +1,8 @@
-import React from "react";
+//functional imports
+import React, { useState, useRef, useContext, useEffect } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { SpotifyContext } from "./SpotifyContext";
+
 import "./Footer.css";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
@@ -15,20 +19,28 @@ import Stack from '@mui/material/Stack';
 // import Slider from '@mui/material/Slider';
 import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import SpotifyPlayer from 'react-spotify-web-playback';
 
-// ************Asks us to be premium users*****************
-//  import SpotifyPlayer from 'react-spotify-web-playback';
-// <SpotifyPlayer
-// token=""
-// uris={['spotify:artist:3mvkWMe6swnknwscwvGCHO']}
-// />
-// ********************************************************
-// May be a possibility
+
 function Footer() {
+  const { localUser } = useContext(SpotifyContext);
+
+  let song = "https://p.scdn.co/mp3-preview/18781de52205d9ade22904945510161feab085ce?cid=8cbb296f5dc941548b0bd90999a4c806"
+
+  const audioElem = useRef();
+
+  function handlePlay () {
+
+    audioElem.current.play();
+  }
+
   return (
     <div className='footer'>
+      <audio src={song} ref={audioElem} />
+
+   
       <div className='footer__left'>
-        <img className="footer__albumLogo" src='https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Phobia-Breaking_Benjamin_album.jpg/220px-Phobia-Breaking_Benjamin_album.jpg' alt="Phobia"/>
+        <img className="footer__albumLogo" src='https://upload.wikimedia.org/wikipedia/en/thumb/4/44/Phobia-Breaking_Benjamin_album.jpg/220px-Phobia-Breaking_Benjamin_album.jpg' alt="Phobia" />
         <div className='footer__songInfo'>
           <h4>The Diary of Jane</h4>
           <p>Breaking Benjamin</p>
@@ -37,7 +49,7 @@ function Footer() {
       <div className='footer__center'>
         <ShuffleIcon className='footer__green' />
         <SkipPreviousIcon className='footer__icon' />
-        <PlayCircleOutlineIcon fontSize='large' className='footer__icon' />
+        <PlayCircleOutlineIcon fontSize='large' className='footer__icon' onClick={handlePlay}/>
         <SkipNextIcon className='footer__icon' />
         <RepeatIcon className='footer__green' />
       </div>
@@ -47,16 +59,16 @@ function Footer() {
             <PlaylistPlayIcon />
           </Grid>
           <Grid item xs>
-          <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-  <VolumeDown />
-  <Slider aria-label="Volume" 
-  
-  // size="small"
-  // value={value} 
-  // onChange={handleChange} 
-  />
-  <VolumeUp />
-</Stack>
+            <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+              <VolumeDown />
+              <Slider aria-label="Volume"
+
+              // size="small"
+              // value={value} 
+              // onChange={handleChange} 
+              />
+              <VolumeUp />
+            </Stack>
 
           </Grid>
         </Grid>
