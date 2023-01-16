@@ -145,25 +145,6 @@ function Profile() {
   //   handleCloseDeleteMenu()
   // }
   
-  // //handles the search submit 
-  // function handleSearchSubmit(e) {
-  //   console.log("event from search submit", e)
-  //   console.log("handle search submit firing")
-  //   e.preventDefault()
-  //   fetch(`/spotify_api/songs/${search}`)
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         res.json().then((tracks) => {
-  //           setTracks(tracks)
-  //         })
-  //       } else {
-  //         res.json().then((err) => {
-  //           setErrors(err.error)
-  //         });
-  //       }
-  //     })
-  //     setSearch('')
-  //   }
 
   //   //updates the form in state with the changed input values from the form
   //   function handleDialogUpdate(e) {
@@ -223,16 +204,23 @@ function Profile() {
 
         <Grid Container>
 
-        <Grid item>
-          <img className="profile_image_class" src={localUser.spotify_img} alt={localUser.username} />
-        </Grid>
-        <Grid item className="body__infoText" >
-          <h4>Associated Spotify account details :</h4>
-          <p>{`Remaining minutes for this session: ${Math.floor((localUser.spotify_token_lifetime - Date.now()/1000)/60)}`}</p>
-          <p>{`Spotify display name: ${localUser.spotify_display_name}`}</p>
-          <p>{`Spotify Id: ${localUser.spotify_id}`}</p>
-          <p>{`Spotify email: ${localUser.spotify_email}`}</p>
-        </Grid>
+        {localUser.spotify_token ? 
+          <>
+            <Grid item>
+              <img className="profile_image_class" src={localUser.spotify_img} alt={`${localUser.username}'s avatar unavailable`} />
+            </Grid>
+            <Grid item className="body__infoText" >
+              <h4>Associated Spotify account details :</h4>
+              <p>{`Remaining minutes for this session: ${Math.floor((localUser.spotify_token_lifetime - Date.now()/1000)/60)}`}</p>
+              <p>{`Spotify display name: ${localUser.spotify_display_name}`}</p>
+              <p>{`Spotify Id: ${localUser.spotify_id}`}</p>
+              <p>{`Spotify email: ${localUser.spotify_email}`}</p>
+            </Grid>
+          </>
+        :
+        <p>Login with Spotify using the link in the navigation bar!</p>
+        }
+
 
         </Grid>
 

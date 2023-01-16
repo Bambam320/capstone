@@ -14,7 +14,6 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import LoginToSpotify from "./LoginToSpotify";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import Playlist from "./Playlist";
@@ -26,7 +25,7 @@ const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [localUser, setLocalUser] = useState({});
   const [currentPlaylist, setCurrentPlaylist] = useState({});
-  const [spotifyUser, setSpotifyUser] = useState('');
+  const [currentTrack, setCurrentTrack] = useState();
 
   // checks the browser session for a logged in user and automatically logs them in
   useEffect(() => {
@@ -57,8 +56,8 @@ const App = () => {
           setLocalUser, 
           currentPlaylist, 
           setCurrentPlaylist,
-          spotifyUser,
-          setSpotifyUser
+          currentTrack,
+          setCurrentTrack
         }}
       >
         <Grid container>

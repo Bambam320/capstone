@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_13_024547) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_16_190256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,7 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_13_024547) do
     t.string "featured_artist"
     t.text "release_date"
     t.string "name"
-    t.text "duration"
     t.string "genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -67,6 +66,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_13_024547) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar_url"
+    t.string "spotify_token"
+    t.string "spotify_refresh_token"
+    t.string "spotify_display_name"
+    t.string "spotify_email"
+    t.string "spotify_id"
+    t.string "spotify_img"
+    t.integer "spotify_token_lifetime"
   end
 
 end

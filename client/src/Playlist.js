@@ -94,12 +94,15 @@ function Playlist() {
 
   // adds track to currentplaylist then updates state with the updated playlist from the backend
   function handleAddTrack(track) {
-    fetch(`/playlists/${currentPlaylist.id}`, {
-      method: "PATCH",
+    console.log(track)
+    fetch(`/songs`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ trackId: track.id })
+      body: JSON.stringify({
+        track,
+        playlistId: currentPlaylist.id})
     }).then((res) => {
       if (res.ok) {
         res.json().then((updatedPlaylist) => {

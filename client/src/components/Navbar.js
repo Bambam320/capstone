@@ -18,7 +18,6 @@ import "../Header.css";
 import "../Sidebar.css";
 import "../SidebarOption.css";
 import Header from '../Header';
-import LoginToSpotify from "../LoginToSpotify";
 import Playlist from '../Playlist';
 import SidebarOption from "../SidebarOption";
 

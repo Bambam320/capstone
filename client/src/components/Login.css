@@ -1,5 +1,6 @@
 .form {
   padding-top: 10em;
+  padding-bottom: 20em;
 }
 
 .login {
@@ -7,8 +8,7 @@
   padding: 70px;
   margin-left: auto;
   margin-right: auto;
-
-  background: black;
+  background: linear-gradient(217deg, rgba(255,0,0,.8), rgba(255,0,0,0) 70.71%), linear-gradient(127deg, rgba(0,255,0,.8), rgba(0,255,0,0) 70.71%), linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%);
   color: white;
 }
 
@@ -43,10 +43,6 @@
   flex-direction: column;
 }
 
-::placeholder {
-  color: black;
-  opacity: 1; /* Firefox */
-}
 .login__logo {
   text-align: center;
 }

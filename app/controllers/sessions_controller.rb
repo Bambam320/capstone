@@ -29,6 +29,16 @@ class SessionsController < ApplicationController
   #the user in the sessions will be logged out
   # sessions#logout
   def destroy
+    user = User.find(session[:user_id])
+    user.update!(
+      spotify_token: '',
+      spotify_refresh_token: '',
+      spotify_token_lifetime: '',
+      spotify_display_name: '',
+      spotify_email: '',
+      spotify_id: '',
+      spotify_img: ''
+    )
     session[:user_id] = nil
     head :no_content
   end

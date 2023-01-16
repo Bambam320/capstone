@@ -1,5 +1,9 @@
 class SongsController < ApplicationController
-  before_action :set_song, only: %i[ show update destroy ]
+    #rescues exceptions when data is not found or invalid
+    rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
+    rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    # wraps incoming parameters to let Rails see them
+    wrap_parameters format: []
 
   # GET /songs
   def index
@@ -15,7 +19,16 @@ class SongsController < ApplicationController
 
   # POST /songs
   def create
-    @song = Song.new(song_params)
+    byebug
+   .create!(
+      album_id: ,
+      playlist_id: ,
+      artist_id: ,
+      featured_artist: ,
+      release_date: ,
+      name: ,
+      genre: ,
+   )
 
     if @song.save
       render json: @song, status: :created, location: @song
@@ -23,6 +36,8 @@ class SongsController < ApplicationController
       render json: @song.errors, status: :unprocessable_entity
     end
   end
+
+  params.permit(:album, :id, :artists, :name, :preview_url, :album_id, :playlist_id, :artist_id, :featured_artist, :release_date, :name, :genre)
 
   # PATCH/PUT /songs/1
   def update
@@ -39,14 +54,21 @@ class SongsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_song
-      @song = Song.find(params[:id])
+
+    #returns the errors in case the exceptions are raised
+    def render_unprocessable_entity_response invalid
+      render json: { error: invalid.record.errors.full_messages }, status: :unprocessable_entity
+    end
+  
+    #returns the errors in case the record isnt found
+    def render_not_found_response
+      render json: { error: ["User not found"] }, status: :not_found
     end
 
     # Only allow a list of trusted parameters through.
-    def song_params
-      params.fetch(:song, {})
+    def playlist_params
+      params.permit(:album, :id, :artists, :name, :preview_url, :album_id, :playlist_id, :artist_id, :featured_artist, :release_date, :name, :genre)
     end
+
 end
 
