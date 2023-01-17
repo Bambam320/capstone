@@ -95,14 +95,22 @@ function Playlist() {
   // adds track to currentplaylist then updates state with the updated playlist from the backend
   function handleAddTrack(track) {
     console.log(track)
+    console.log(currentPlaylist)
+    let songGenre = track.album.genres === null ? null : track.album.genres[0]
     fetch(`/songs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        track,
-        playlistId: currentPlaylist.id})
+        spotify_album_id: track.album.id,
+        playlist_id: currentPlaylist.id,
+        spotify_artist_id: track.artists[0].id,
+        featured_artist: track.artists[0].name,
+        release_date: track.album.release_date,
+        name: track.name,
+        genre: songGenre
+      })
     }).then((res) => {
       if (res.ok) {
         res.json().then((updatedPlaylist) => {

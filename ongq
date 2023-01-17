@@ -1,0 +1,22 @@
+
+[1mFrom:[0m /home/bambam/development/code/capstone/joined-capstone/capstone/app/controllers/songs_controller.rb:38 SongsController#create:
+
+    [1;34m21[0m: [32mdef[0m [1;34mcreate[0m
+    [1;34m22[0m:   byebug
+    [1;34m23[0m:   [1;34m# Song.create!([0m
+    [1;34m24[0m:   [1;34m#   album_id: ,[0m
+    [1;34m25[0m:   [1;34m#   playlist_id: ,[0m
+    [1;34m26[0m:   [1;34m#   artist_id: ,[0m
+    [1;34m27[0m:   [1;34m#   featured_artist: ,[0m
+    [1;34m28[0m:   [1;34m#   release_date: ,[0m
+    [1;34m29[0m:   [1;34m#   name: ,[0m
+    [1;34m30[0m:   [1;34m#   genre: ,[0m
+    [1;34m31[0m:   [1;34m# )[0m
+    [1;34m32[0m: 
+    [1;34m33[0m:   [1;34m# if @song.save[0m
+    [1;34m34[0m:   [1;34m#   render json: @song, status: :created, location: @song[0m
+    [1;34m35[0m:   [1;34m# else[0m
+    [1;34m36[0m:   [1;34m#   render json: @song.errors, status: :unprocessable_entity[0m
+    [1;34m37[0m:   [1;34m# end[0m
+ => [1;34m38[0m: [32mend[0m
+

@@ -19,25 +19,13 @@ class SongsController < ApplicationController
 
   # POST /songs
   def create
+    playlist = Playlist.find(song_params[:playlist_id])
     byebug
-   .create!(
-      album_id: ,
-      playlist_id: ,
-      artist_id: ,
-      featured_artist: ,
-      release_date: ,
-      name: ,
-      genre: ,
-   )
-
-    if @song.save
-      render json: @song, status: :created, location: @song
-    else
-      render json: @song.errors, status: :unprocessable_entity
-    end
+    song = playlist.songs.create!(song_params)
+    render json: song, status: :created
   end
 
-  params.permit(:album, :id, :artists, :name, :preview_url, :album_id, :playlist_id, :artist_id, :featured_artist, :release_date, :name, :genre)
+  # params.permit(:album, :id, :artists, :name, :preview_url, :album_id, :playlist_id, :artist_id, :featured_artist, :release_date, :name, :genre)
 
   # PATCH/PUT /songs/1
   def update
@@ -66,8 +54,8 @@ class SongsController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def playlist_params
-      params.permit(:album, :id, :artists, :name, :preview_url, :album_id, :playlist_id, :artist_id, :featured_artist, :release_date, :name, :genre)
+    def song_params
+      params.permit(:playlist_id, :name, :preview_url, :spotify_album_id, :spotify_playlist_id, :spotify_artist_id, :featured_artist, :release_date, :name, :genre)
     end
 
 end
