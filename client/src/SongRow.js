@@ -16,8 +16,9 @@ function SongRow({ track, onAddTrack }) {
   //set state from context
   const { setCurrentTrack } = useContext(SpotifyContext);
 
+
   return (
-    <Grid container className="songRow" width="700px">
+    <Grid container className="songRow" width="1200px">
 
         <Grid item xs={1}>
         <img src={track.album.images[0].url} alt={track.album.name} className="songRow__album" />
@@ -49,7 +50,7 @@ function SongRow({ track, onAddTrack }) {
           <h4>Track</h4>
         </Button>
         <Button 
-          onClick={() => {onAddTrack(track)}} 
+          onClick={(e) => {onAddTrack(track, e)}} 
           className='sidebarOption'
           sx={{
             color: 'grey',

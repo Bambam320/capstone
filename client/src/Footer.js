@@ -45,7 +45,14 @@ function Footer() {
     setPlayState(!playState)
   }
 
-  console.log(currentTrack)
+  function prevSong () {
+
+  }
+
+  function nextSong () {
+    
+  }
+
   return (
     <div className='footer'>
       <audio src={currentTrack ? currentTrack.preview_url : <></>} ref={audioElem} />
@@ -66,12 +73,12 @@ function Footer() {
       </div>
       <div className='footer__center'>
         <ShuffleIcon className='footer__green' />
-        <SkipPreviousIcon className='footer__icon' />
+        <SkipPreviousIcon className='footer__icon' onClick={prevSong}/>
         {playState ? 
           <PauseCircleOutlineIcon fontSize='large' className='footer__icon' onClick={handlePlayPause} />
         :
           <PlayCircleOutlineIcon fontSize='large' className='footer__icon' onClick={handlePlayPause}/>}
-        <SkipNextIcon className='footer__icon' />
+        <SkipNextIcon className='footer__icon' onClick={nextSong}/>
         <RepeatIcon className='footer__green' />
       </div>
       <div className='footer__right'>

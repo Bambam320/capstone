@@ -16,6 +16,7 @@ class PlaylistsController < ApplicationController
 
   # GET /playlists/:id
   def show
+    # byebug
     playlist = Playlist.find(params[:id])
     render json: playlist, status: :ok
   end

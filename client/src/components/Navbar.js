@@ -51,11 +51,9 @@ function Navbar() {
 
   //sort and map over users playlists and list them as links
   const ListUserPlaylists = () => {
-    console.log("listUserPlaylists is firing localUser", localUser)
     let updatedPlaylistLinks = localUser.playlists
       .sort((a, b) => a.id - b.id)
       .map((playlist) => {
-        console.log("just before the return fires")
       return (
         <Link
           to={`playlists/${playlist.id}`}
@@ -74,12 +72,19 @@ function Navbar() {
   }
 
   function reload() {
+    navigate("/")
     window.location.reload();
   }
 
   return (
     <div className='sidebar'>
-      <h1 className='logo' onClick={() => {reload()}}>🎶Fakeify&reg;</h1>
+      <h1 
+        className='logo' 
+        onClick={() => {reload()}} 
+        style={{cursor: 'pointer'}}
+      >
+        🎶Fakeify&reg;
+      </h1>
       <Link to="/home" className='sidebarOption'>
         <HomeIcon className="sidebarOption_icon" />
         <h4>Home</h4>

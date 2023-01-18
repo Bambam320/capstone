@@ -10,28 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_16_233246) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_18_015635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "albums", force: :cascade do |t|
     t.integer "artist_id"
     t.string "name"
-    t.string "artist"
     t.text "release_date"
-    t.integer "song_count"
-    t.string "cover"
-    t.string "genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "spotify_artist_id"
+    t.string "artist_name"
+    t.integer "total_tracks"
+    t.string "image_url"
+    t.string "spotify_id"
   end
 
   create_table "artists", force: :cascade do |t|
     t.string "name"
     t.string "genres"
-    t.string "hometown"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_url"
+    t.string "spotify_id"
+    t.integer "followers"
   end
 
   create_table "playlists", force: :cascade do |t|
@@ -55,9 +58,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_16_233246) do
     t.string "genre"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "spotify_playlist_id"
-    t.integer "spotify_album_id"
-    t.integer "spotify_artist_id"
+    t.string "spotify_playlist_id"
+    t.string "spotify_album_id"
+    t.string "spotify_artist_id"
+    t.string "preview_url"
+    t.string "cover_art"
   end
 
   create_table "users", force: :cascade do |t|

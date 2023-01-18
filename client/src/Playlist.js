@@ -7,6 +7,7 @@ import { SpotifyContext } from "./SpotifyContext";
 import "./Body.css";
 import "./App.css";
 import SongRow from "./SongRow";
+import PlaylistSongRow from "./PlaylistSongRow";
 
 //material ui imports
 import Button from '@mui/material/Button';
@@ -26,8 +27,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
-
-
+import Divider from '@mui/material/Divider';
 
 function Playlist() {
   // sets state, params, navigate and context
@@ -93,9 +93,8 @@ function Playlist() {
   }
 
   // adds track to currentplaylist then updates state with the updated playlist from the backend
-  function handleAddTrack(track) {
-    console.log(track)
-    console.log(currentPlaylist)
+  function handleAddTrack(track, e) {
+    e.preventDefault()
     let songGenre = track.album.genres === null ? null : track.album.genres[0]
     fetch(`/songs`, {
       method: "POST",
@@ -109,28 +108,31 @@ function Playlist() {
         featured_artist: track.artists[0].name,
         release_date: track.album.release_date,
         name: track.name,
-        genre: songGenre
+        genre: songGenre,
+        preview_url: track.preview_url,
+        cover_art: track.album.images[0].url,
       })
     }).then((res) => {
       if (res.ok) {
-        res.json().then((updatedPlaylist) => {
-          setCurrentPlaylist(updatedPlaylist)
+        res.json().then((newSong) => {
           let updatedPlaylists = localUser.playlists.map((pl) => {
-            if (params.id === pl.id) {
-              return updatedPlaylist
+            if (params.id === pl.id.toString()) {
+              pl.songs.push(newSong)
+              return pl
             } else {
               return pl
             }
           })
-          setLocalUser({ ...localUser, playlists: [updatedPlaylists] })
-        });
-      } else {
-        res.json().then((err) => {
-          setErrors(err.error)
+          setLocalUser({ ...localUser, playlists: updatedPlaylists })
+          setCurrentPlaylist({ ...currentPlaylist, songs: [...currentPlaylist.songs, newSong] })
         });
       }
     })
   }
+
+  console.log("localUser", localUser)
+
+  console.log("currentPlaylist", currentPlaylist)
 
   // deletes the current playlist and updates states by removing it
   function handleDeletePlaylist(e) {
@@ -155,7 +157,7 @@ function Playlist() {
     })
     handleCloseDeleteMenu()
   }
-  
+
   //handles the search submit 
   function handleSearchSubmit(e) {
     e.preventDefault()
@@ -171,29 +173,27 @@ function Playlist() {
           });
         }
       })
-      setSearch('')
-    }
+    setSearch('')
+  }
 
-    //updates the form in state with the changed input values from the form
-    function handleDialogUpdate(e) {
-      setForm({ ...form, [e.target.name]: e.target.value })
-    }
-  
-    //handles opening and closing the form
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-    const handleClose = () => {
-      setOpen(false);
-      setForm(currentPlaylist)
-    };
+  //updates the form in state with the changed input values from the form
+  function handleDialogUpdate(e) {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  //handles opening and closing the form
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setForm(currentPlaylist)
+  };
 
   //updates state held search value for song search input
   function handleSearchInputChange(e) {
     setSearch(e.target.value)
   }
-
-  console.log("tracks", tracks)
 
   //menu open and close handling for the delete threedot button
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -210,6 +210,8 @@ function Playlist() {
     setForm({ ...form, [val]: '' })
   }
 
+
+
   return (
     <>
       {/* playlist information */}
@@ -222,13 +224,62 @@ function Playlist() {
               </span>
             );
           })}
+
+
+
+
+
           <div onClick={handleClickOpen} >
             <img className="image_class" src={currentPlaylist.image} alt={currentPlaylist.name} />
           </div>
-          <div className="body__infoText" onClick={handleClickOpen}>
-            <h4>{currentPlaylist.name}</h4>
-            <p>{currentPlaylist.description}</p>
-            <p>{`${localUser.username}'s playlist`}</p>
+
+
+
+
+
+
+          <div>
+
+
+            {/* delete icon and menu */}
+            <div>
+              <IconButton
+                aria-label="more"
+                id="long-button"
+                aria-controls={openDeletePlaylist ? 'long-menu' : undefined}
+                aria-expanded={openDeletePlaylist ? 'true' : undefined}
+                aria-haspopup="true"
+                onClick={handleOpenDeleteMenu}
+              >
+                <MoreHorizIcon
+                  sx={{
+                    marginLeft: '-10px',
+                    // height: '40px',
+                    marginBottom: '-20px',
+                    color: 'white',
+                  }}
+                />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={openDeletePlaylist}
+                onClose={handleCloseDeleteMenu}
+              >
+                <MenuItem onClick={handleDeletePlaylist}>
+                  Delete Playlist
+                </MenuItem>
+              </Menu>
+            </div>
+
+            <div className="body__infoText" onClick={handleClickOpen}>
+              <h4>{currentPlaylist.name}</h4>
+              <p>{currentPlaylist.description}</p>
+              <p>{`${localUser.username}'s playlist`}</p>
+            </div>
           </div>
 
           {/* dialog for update menu */}
@@ -325,41 +376,24 @@ function Playlist() {
         </div>
       </Grid>
 
-      {/* delete icon and menu */}
+
+      {/* list songs that belong to playlist */}
+      <div>
+        {currentPlaylist.songs.length > 0 ?
+          currentPlaylist.songs.map((song) => {
+            return <PlaylistSongRow song={song} key={song.id} />
+          })
+          :
+          <></>
+        }
+      </div>
+
+
+      <Divider variant="middle" sx={{ bgcolor: 'white', marginTop: '-20px', marginBottom: '20px' }} />
+
       <Grid container>
         <Grid item>
-          <div>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              aria-controls={openDeletePlaylist ? 'long-menu' : undefined}
-              aria-expanded={openDeletePlaylist ? 'true' : undefined}
-              aria-haspopup="true"
-              onClick={handleOpenDeleteMenu}
-            >
-              <MoreHorizIcon
-                sx={{
-                  marginLeft: '30px',
-                  height: '40px',
-                  marginTop: '-50px',
-                  color: 'white',
-                }}
-              />
-            </IconButton>
-            <Menu
-              id="long-menu"
-              MenuListProps={{
-                'aria-labelledby': 'long-button',
-              }}
-              anchorEl={anchorEl}
-              open={openDeletePlaylist}
-              onClose={handleCloseDeleteMenu}
-            >
-              <MenuItem onClick={handleDeletePlaylist}>
-                Delete Playlist
-              </MenuItem>
-            </Menu>
-          </div>
+
 
           {/* search menu in playlist page to list songs to add */}
           <Paper
@@ -369,7 +403,7 @@ function Playlist() {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: 250,
+              width: 450,
               marginLeft: '2em',
               backgroundColor: 'grey'
             }}
@@ -388,18 +422,22 @@ function Playlist() {
           </Paper>
         </Grid>
 
-        {/* List songs from search results */}
-        <Grid item>
-          {tracks.length > 0 ?
-            tracks.map((track) => {
-              return <SongRow track={track} key={track.id} onAddTrack={handleAddTrack} />
-            })
-            :
-            <></>
-          }
-        </Grid>
 
       </Grid>
+
+
+      {/* List songs from search results */}
+      <div>
+        {tracks.length > 0 ?
+          tracks.map((track) => {
+            return <SongRow track={track} key={track.id} onAddTrack={handleAddTrack} />
+          })
+          :
+          <></>
+        }
+      </div>
+
+
     </>
   )
 }
