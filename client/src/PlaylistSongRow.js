@@ -12,11 +12,16 @@ import Grid from '@mui/material/Grid';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import AddIcon from '@mui/icons-material/Add';
 
-function PlaylistSongRow({song}) {
+function PlaylistSongRow({song, queue}) {
     //set state from context
-    const { setCurrentTrack } = useContext(SpotifyContext);
+    const { setCurrentTrack, setCurrentQueue } = useContext(SpotifyContext);
 
 console.log("song", song)
+
+  function handlePlayTrack (e) {
+    setCurrentTrack(song)
+    setCurrentQueue(queue)
+  }
 
   return (
     <Grid container className="songRow" width="700px">
@@ -29,15 +34,14 @@ console.log("song", song)
         <div className="songRow__info">
           <h1>{song.name}</h1>
           <p>
-            {/* {track.artists.map((artist) => artist.name).join(", ")} -{" "}
-            {track.album.name} */}
+            {song.featured_artist}
           </p>
         </div>
         </Grid>
 
       <Grid item xs={3}>
         <Button 
-          onClick={() => {setCurrentTrack(song)}}
+          onClick={(e) => {handlePlayTrack(e)}}
           className='sidebarOption'
           sx={{
             color: 'grey',

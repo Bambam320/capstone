@@ -379,9 +379,9 @@ function Playlist() {
 
       {/* list songs that belong to playlist */}
       <div>
-        {currentPlaylist.songs.length > 0 ?
+        {currentPlaylist.songs ?
           currentPlaylist.songs.map((song) => {
-            return <PlaylistSongRow song={song} key={song.id} />
+            return <PlaylistSongRow song={song} key={song.id} queue={currentPlaylist.songs}/>
           })
           :
           <></>
@@ -405,6 +405,7 @@ function Playlist() {
               alignItems: 'center',
               width: 450,
               marginLeft: '2em',
+              marginBottom: '8em',
               backgroundColor: 'grey'
             }}
           >

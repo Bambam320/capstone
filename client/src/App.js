@@ -26,6 +26,7 @@ const App = () => {
   const [localUser, setLocalUser] = useState({});
   const [currentPlaylist, setCurrentPlaylist] = useState({});
   const [currentTrack, setCurrentTrack] = useState();
+  const [currentQueue, setCurrentQueue] = useState([]);
 
   // checks the browser session for a logged in user and automatically logs them in
   useEffect(() => {
@@ -57,7 +58,9 @@ const App = () => {
           currentPlaylist, 
           setCurrentPlaylist,
           currentTrack,
-          setCurrentTrack
+          setCurrentTrack,
+          currentQueue, 
+          setCurrentQueue
         }}
       >
         <Grid container>
