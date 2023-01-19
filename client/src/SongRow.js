@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import AddIcon from '@mui/icons-material/Add';
 
-function SongRow({ track, onAddTrack }) {
+function SongRow({ track, handleAddTrack }) {
   //set state from context
   const { setCurrentTrack } = useContext(SpotifyContext);
 
@@ -50,7 +50,7 @@ function SongRow({ track, onAddTrack }) {
           <h4>Track</h4>
         </Button>
         <Button 
-          onClick={(e) => {onAddTrack(track, e)}} 
+          onClick={(e) => {handleAddTrack(track, e)}} 
           className='sidebarOption'
           sx={{
             color: 'grey',

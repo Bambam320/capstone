@@ -34,21 +34,19 @@ function Header() {
   const navigate = useNavigate();
 
   // brings state from context
-  const { localUser, setLocalUser, setIsAuthenticated } = useContext(SpotifyContext);
+  const { localUser, setLocalUser, setIsAuthenticated, setMainSearch } = useContext(SpotifyContext);
 
   //updates the search value to state
   function handleChange(e) {
     setSearch(e.target.value)
   }
 
+  //set search state and navigate to /search to display results
   function handleSubmit(e) {
+    console.log("submit firing", search)
     e.preventDefault()
-    console.log('handle submit is working in search bar')
-    console.log(search)
-
-    // fetch(`/spotify_api/${search}`)
-    //   .then((r) => r.json())
-    //   .then((results) => console.log(results))
+    setMainSearch(search)
+    navigate("/search")
   }
 
   //passed back from Navbar and removes the current user for logout
@@ -146,7 +144,7 @@ function Header() {
                 type="button" 
                 sx={{ p: '10px' }} 
                 aria-label="search"
-                onClick={handleSubmit}
+                onClick={(e) => handleSubmit(e)}
               >
                 <SearchIcon />
               </IconButton>

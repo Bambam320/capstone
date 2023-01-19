@@ -130,9 +130,33 @@ function Playlist() {
     })
   }
 
-  console.log("localUser", localUser)
-
-  console.log("currentPlaylist", currentPlaylist)
+  // removes a track from the currentplaylist
+  function handleDeleteTrack(song, e) {
+    console.log("handledeletetrack is firing", song)
+    e.preventDefault()
+    fetch(`/songs/${song.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((res) => {
+      if (res.ok) {
+       
+          let updatedPlaylists = localUser.playlists.map((pl) => {
+            if (params.id === pl.id.toString()) {
+              pl.songs = pl.songs.filter((ele) => ele.id !== song.id )
+              return pl
+            } else {
+              return pl
+            }
+          })
+          setLocalUser({ ...localUser, playlists: updatedPlaylists })
+          let updatedSongs = currentPlaylist.songs.filter((ele) => ele.id !== song.id)
+          setCurrentPlaylist({ ...currentPlaylist, songs: updatedSongs })
+  
+      }
+    })
+  }
 
   // deletes the current playlist and updates states by removing it
   function handleDeletePlaylist(e) {
@@ -381,7 +405,7 @@ function Playlist() {
       <div>
         {currentPlaylist.songs ?
           currentPlaylist.songs.map((song) => {
-            return <PlaylistSongRow song={song} key={song.id} queue={currentPlaylist.songs}/>
+            return <PlaylistSongRow song={song} key={song.id} queue={currentPlaylist.songs} handleDeleteTrack={handleDeleteTrack}/>
           })
           :
           <></>
@@ -431,7 +455,7 @@ function Playlist() {
       <div>
         {tracks.length > 0 ?
           tracks.map((track) => {
-            return <SongRow track={track} key={track.id} onAddTrack={handleAddTrack} />
+            return <SongRow track={track} key={track.id} handleAddTrack={handleAddTrack} />
           })
           :
           <></>

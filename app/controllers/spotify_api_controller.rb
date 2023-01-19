@@ -1,11 +1,20 @@
 class SpotifyApiController < ApplicationController
 
   before_action :update_token
-  skip_before_action :update_token, only: [:callback, :search_for_tracks]
+  skip_before_action :update_token, only: [:callback, :search_for_tracks, :browse]
 
   def search_for_tracks
     songs = RSpotify::Track.search("#{params[:search]}", limit: 30)
     render json: songs, status: :ok
+  end
+
+  def browse
+    results = {}
+    results[:artists] = RSpotify::Artist.search("#{params[:term]}", limit: 10)
+    results[:tracks] = RSpotify::Track.search("#{params[:term]}", limit: 10)
+    results[:albums] = RSpotify::Album.search("#{params[:term]}", limit: 10)
+    results[:playlists] = RSpotify::Playlist.search("#{params[:term]}", limit: 10)
+    render json: results, status: :ok
   end
 
   def callback

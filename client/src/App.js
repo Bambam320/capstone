@@ -16,10 +16,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
+import Search from "./components/Search";
 import Playlist from "./Playlist";
-
-// importing material ui components
-import Search from "@mui/icons-material/Search";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,6 +25,7 @@ const App = () => {
   const [currentPlaylist, setCurrentPlaylist] = useState({});
   const [currentTrack, setCurrentTrack] = useState();
   const [currentQueue, setCurrentQueue] = useState([]);
+  const [mainSearch, setMainSearch] = useState('');
 
   // checks the browser session for a logged in user and automatically logs them in
   useEffect(() => {
@@ -40,6 +39,9 @@ const App = () => {
     });
   }, []);
 
+console.log("main search from app", mainSearch)
+
+  // 
   if (!isAuthenticated)
     return (
       <SpotifyContext.Provider value={{ setIsAuthenticated, setLocalUser }}>
@@ -60,7 +62,9 @@ const App = () => {
           currentTrack,
           setCurrentTrack,
           currentQueue, 
-          setCurrentQueue
+          setCurrentQueue,
+          mainSearch,
+          setMainSearch
         }}
       >
         <Grid container>
@@ -77,9 +81,9 @@ const App = () => {
               <Route path='/search' element={<Search />} />
               <Route path="/playlists/:id" element={<Playlist />} />
               <Route path="/profile" element={<Profile />} />
+              {/* <Route path='/*' element={<></>} /> */}
               {/* <Route path='/collection/' element={<CollectionHeader />} >
                 <Route path='playlists' element={<Playlists />} />
-                <Route path='songs' element={<Songs />} />
               </Route> */}              
             </Routes>
           </Grid>

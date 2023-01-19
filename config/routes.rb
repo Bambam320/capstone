@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get "auth/spotify/callback", to: "spotify_api#callback"
   get "spotify_api/songs/:search", to: "spotify_api#search_for_tracks"
   get "spotify_api/user", to: "spotify_api#current_user"
+  get "spotify_api/browse", to: "spotify_api#browse"
 
   get '*path',
   to: 'fallback#index',
