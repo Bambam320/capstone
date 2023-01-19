@@ -34,7 +34,12 @@ function Search() {
   // sets hooks
   const { mainSearch, setMainSearch } = useContext(SpotifyContext);
   const navigate = useNavigate();
-  const [results, setResults] = useState();
+  const [results, setResults] = useState({
+    artists: [],
+    songs: [],
+    albums: [],
+    playlists:[],
+  });
   const [errors, setErrors] = useState([]);
 
 useEffect(() => {
@@ -54,17 +59,17 @@ useEffect(() => {
 
 console.log("results", results)
 
-  // let playlistResults = results.playlists.map((playlist) => {
-  //   return (
-  //     <></>
-  //   )
-  // })
+  let playlistResults = results.playlists.map((playlist) => {
+    return (
+      <></>
+    )
+  })
 
   return (
     <div>
       <Grid container>
         <Grid item>
-          {/* {playlistResults} */}
+          {playlistResults}
         </Grid>
       </Grid>
 
