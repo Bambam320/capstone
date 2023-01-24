@@ -68,11 +68,9 @@ console.log("main search from app", mainSearch)
         }}
       >
         <Grid container>
-
           <Grid item >
           <Navbar />
           </Grid>
-
           <Grid item sx={{flexGrow: 1}}>
             <Header /> 
             <Routes>
@@ -88,9 +86,7 @@ console.log("main search from app", mainSearch)
             </Routes>
           </Grid>
         </Grid>
-
         <Footer />
-
       </SpotifyContext.Provider>
     </Router>
   );

@@ -94,6 +94,9 @@ function Playlist() {
 
   // adds track to currentplaylist then updates state with the updated playlist from the backend
   function handleAddTrack(track, e) {
+    //do not sent track from songrow and try to get it from the array insteaed, submits do not pass more than one argument back
+    console.log("e", e)
+    console.log("track", track)
     e.preventDefault()
     let songGenre = track.album.genres === null ? null : track.album.genres[0]
     fetch(`/songs`, {
