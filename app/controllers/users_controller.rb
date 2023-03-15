@@ -31,4 +31,5 @@ class UsersController < ApplicationController
     render json: { errors: ["User not found"] }, status: :not_found
   end
 
+  # provides only permitted params to the controller
 end
